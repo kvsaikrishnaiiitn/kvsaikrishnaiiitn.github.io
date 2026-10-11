@@ -98,6 +98,17 @@
         .tag-chip{transition:all .2s}
         .tag-chip:hover{border-color:rgba(96,165,250,.5);color:#93c5fd;transform:translateY(-2px)}
 
+        /* ===== Interactive terminal component ===== */
+        .term-root{font-family:'JetBrains Mono',monospace}
+        .term-glow{animation:term-glow 2.6s ease-in-out infinite}
+        @keyframes term-glow{0%,100%{box-shadow:0 0 10px rgba(63,185,80,.28),0 0 26px rgba(63,185,80,.10)}50%{box-shadow:0 0 20px rgba(63,185,80,.55),0 0 44px rgba(63,185,80,.22)}}
+        .term-scroll::-webkit-scrollbar{width:8px}
+        .term-scroll::-webkit-scrollbar-track{background:transparent}
+        .term-scroll::-webkit-scrollbar-thumb{background:#30363d;border-radius:4px}
+        .term-scroll::-webkit-scrollbar-thumb:hover{background:#484f58}
+        .term-line{white-space:pre-wrap;word-break:break-word}
+        .term-caret{caret-color:#3fb950}
+
         @media (prefers-reduced-motion:reduce){
             *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
         }
@@ -795,9 +806,41 @@
     </footer>
 
     <!-- Back to top -->
-    <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 right-6 z-50 w-11 h-11 rounded-xl bg-blue-600 hover:bg-blue-500 text-white shadow-xl shadow-blue-900/40 flex items-center justify-center opacity-0 pointer-events-none" aria-label="Back to top">
+    <button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 left-6 z-50 w-11 h-11 rounded-xl bg-blue-600 hover:bg-blue-500 text-white shadow-xl shadow-blue-900/40 flex items-center justify-center opacity-0 pointer-events-none" aria-label="Back to top">
         <i class="fa-solid fa-arrow-up"></i>
     </button>
+
+    <!-- ===== Interactive Terminal Component (bottom-right) ===== -->
+    <div id="term-comp" class="fixed bottom-5 right-5 z-[70] term-root" role="complementary" aria-label="Interactive terminal">
+        <!-- Glowing minimized notification tag -->
+        <button id="term-tab" type="button" class="term-glow flex items-center gap-2.5 pl-3 pr-4 py-2.5 rounded-full bg-[#0d1117]/95 border border-emerald-500/40 backdrop-blur cursor-pointer transition-transform hover:scale-105" aria-label="Open terminal">
+            <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+            </span>
+            <i class="fa-solid fa-terminal text-emerald-400 text-xs"></i>
+            <span class="text-xs font-bold text-emerald-300 tracking-wide">terminal</span>
+            <span class="hidden sm:inline text-[10px] text-gray-500">~/portfolio</span>
+        </button>
+
+        <!-- Terminal window -->
+        <div id="term-window" class="hidden w-[min(calc(100vw-2.5rem),540px)] rounded-xl border border-[#30363d] bg-[#0d1117] shadow-2xl shadow-black/70 overflow-hidden">
+            <div class="flex items-center gap-2 px-3.5 py-2.5 bg-[#161b22] border-b border-[#30363d] select-none">
+                <span class="w-3 h-3 rounded-full bg-[#ff5f57]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#febc2e]"></span>
+                <span class="w-3 h-3 rounded-full bg-[#28c840]"></span>
+                <span class="ml-2 text-[11px] text-gray-400 truncate">venkata@iiitn: ~/portfolio — bash</span>
+                <button id="term-min" type="button" class="ml-auto w-6 h-6 flex items-center justify-center rounded-md text-gray-500 hover:text-white hover:bg-[#30363d] transition" title="Minimize" aria-label="Minimize terminal">
+                    <i class="fa-solid fa-minus text-[10px]"></i>
+                </button>
+            </div>
+            <div id="term-out" class="term-scroll h-64 overflow-y-auto px-4 py-3 text-[12.5px] leading-[1.55] text-gray-300"></div>
+            <div class="flex items-center gap-2 px-4 py-2.5 border-t border-[#30363d] bg-[#0d1117]">
+                <span class="text-emerald-400 text-[12.5px] font-semibold whitespace-nowrap select-none">venkata@iiitn:~$</span>
+                <input id="term-in" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" class="term-caret flex-1 min-w-0 bg-transparent outline-none border-none text-[12.5px] text-gray-100 placeholder-[#484f58]" placeholder="type 'help' + Enter" aria-label="Terminal input">
+            </div>
+        </div>
+    </div>
 
     <script>
     (function(){
@@ -1072,6 +1115,242 @@
             var body = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\n\n' + msg);
             window.location.href = 'mailto:kvsaikrishna.iiitn@gmail.com?subject=' + subject + '&body=' + body;
         });
+        });
+    })();
+    </script>
+
+    <!-- ===== Terminal Component Logic ===== -->
+    <script>
+    (function(){
+        'use strict';
+        var tab  = document.getElementById('term-tab');
+        var win  = document.getElementById('term-window');
+        var out  = document.getElementById('term-out');
+        var input = document.getElementById('term-in');
+        var minBtn = document.getElementById('term-min');
+        if(!tab || !win || !out || !input || !minBtn) return;
+
+        var queue = Promise.resolve();
+        var history = [];
+        var hIdx = 0;
+        var welcomed = false;
+
+        function escapeHtml(s){
+            return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        }
+        function pad(s, n){
+            s = String(s);
+            while(s.length < n){ s += ' '; }
+            return s;
+        }
+        function append(html, cls){
+            var div = document.createElement('div');
+            div.className = 'term-line' + (cls ? ' ' + cls : '');
+            div.innerHTML = html || '&nbsp;';
+            out.appendChild(div);
+            out.scrollTop = out.scrollHeight;
+        }
+        function printLines(lines, delay){
+            queue = queue.then(function(){
+                return new Promise(function(resolve){
+                    var i = 0;
+                    (function next(){
+                        if(i < lines.length){
+                            append(lines[i][0], lines[i][1]);
+                            i++;
+                            setTimeout(next, delay || 40);
+                        } else {
+                            resolve();
+                        }
+                    })();
+                });
+            });
+            return queue;
+        }
+
+        function openTerm(){
+            win.classList.remove('hidden');
+            tab.classList.add('hidden');
+            if(!welcomed){
+                welcomed = true;
+                printLines([
+                    ['<span class="text-gray-500">last login: ' + escapeHtml(new Date().toLocaleString()) + ' on ttys001</span>'],
+                    ['<span class="text-emerald-400">✔ connected</span> <span class="text-gray-400">— kvsaikrishnaiiitn.github.io · portfolio terminal v2026.1</span>'],
+                    ['<span class="text-gray-500">type </span><span class="text-sky-300">help</span><span class="text-gray-500"> to list commands · </span><span class="text-sky-300">clear</span><span class="text-gray-500"> to flush the screen · </span><span class="text-sky-300">exit</span><span class="text-gray-500"> to minimize</span>'],
+                    ['']
+                ], 70);
+            }
+            setTimeout(function(){ input.focus(); }, 80);
+        }
+        function closeTerm(){
+            win.classList.add('hidden');
+            tab.classList.remove('hidden');
+        }
+
+        tab.addEventListener('click', openTerm);
+        minBtn.addEventListener('click', function(e){ e.stopPropagation(); closeTerm(); });
+        win.addEventListener('click', function(){ input.focus(); });
+
+        var C = {
+            dim:   '<span class="text-gray-500">',
+            ok:    '<span class="text-emerald-400">',
+            info:  '<span class="text-sky-300">',
+            warn:  '<span class="text-amber-300">',
+            err:   '<span class="text-rose-400">',
+            bold:  '<span class="text-gray-100 font-semibold">',
+            cyan:  '<span class="text-cyan-300">',
+            close: '</span>'
+        };
+
+        function bar(pct){
+            var filled = Math.round(pct / 5);
+            return '<span class="text-emerald-400">' + '█'.repeat(filled) + '</span><span class="text-gray-600">' + '░'.repeat(20 - filled) + '</span>';
+        }
+
+        var SKILLS = [
+            ['Java', 95], ['Spring Boot', 94], ['REST APIs', 92], ['Jenkins CI/CD', 92],
+            ['Microservices', 90], ['Oracle SQL', 90], ['Apache Kafka', 88], ['Docker', 88],
+            ['SonarQube', 86], ['Kubernetes', 84], ['ELK Stack', 84], ['HBase / NoSQL', 80]
+        ];
+
+        function cmdHelp(){
+            var rows = [
+                [C.bold + 'Available commands' + C.close],
+                [C.dim + '──────────────────────────────────────────────────' + C.close],
+                [pad('  help', 20) + C.dim + 'list available commands' + C.close],
+                [pad('  clear', 20) + C.dim + 'flush the terminal screen' + C.close],
+                [pad('  skills', 20) + C.dim + 'backend tech stack · ASCII bar chart' + C.close],
+                [pad('  hackathon', 20) + C.dim + 'Q1 Tech For Good Hackathon 2026 victory logs' + C.close],
+                [pad('  about', 20) + C.dim + 'jump to about section' + C.close],
+                [pad('  experience', 20) + C.dim + 'jump to experience timeline' + C.close],
+                [pad('  awards', 20) + C.dim + 'jump to recognition & achievements' + C.close],
+                [pad('  contact', 20) + C.dim + 'jump to contact section' + C.close],
+                [pad('  github', 20) + C.dim + 'open GitHub profile in a new tab' + C.close],
+                [pad('  resume', 20) + C.dim + 'open résumé (PDF)' + C.close],
+                [pad('  ls · pwd · uname · date · echo', 20) + C.dim + 'classics' + C.close],
+                [pad('  whoami', 20) + C.dim + 'identity check' + C.close],
+                [pad('  exit', 20) + C.dim + 'minimize terminal' + C.close],
+                [C.dim + 'tip: ↑ / ↓ navigates command history · Ctrl+L clears screen' + C.close]
+            ];
+            printLines(rows, 26);
+        }
+
+        function cmdSkills(){
+            var lines = [
+                [C.bold + 'BACKEND TECH STACK — PROFICIENCY' + C.close],
+                [C.dim + '──────────────────────────────────────────────────' + C.close]
+            ];
+            SKILLS.forEach(function(s){
+                lines.push(['  ' + C.cyan + pad(s[0], 16) + C.close + ' ' + bar(s[1]) + '  ' + C.info + pad(s[1] + '%', 5) + C.close]);
+            });
+            lines.push([C.dim + '──────────────────────────────────────────────────' + C.close]);
+            lines.push([C.dim + 'languages & core · frameworks · data · devops · observability' + C.close]);
+            printLines(lines, 42);
+        }
+
+        function cmdHackathon(){
+            printLines([
+                [C.dim + '[2026-01-18 09:00:01]' + C.close + ' ' + C.info + 'INFO' + C.close + '  Q1 Tech For Good Hackathon 2026 — initializing'],
+                [C.dim + '[2026-01-18 09:02:14]' + C.close + ' ' + C.ok + ' OK ' + C.close + '  team formed: ' + C.bold + 'Rebels' + C.close],
+                [C.dim + '[2026-01-18 09:15:47]' + C.close + ' ' + C.ok + ' OK ' + C.close + '  problem statement locked: tech-for-good innovation'],
+                [C.dim + '[2026-01-18 10:31:22]' + C.close + ' ' + C.ok + ' OK ' + C.close + '  architecture: ' + C.cyan + 'Spring Boot microservices + event-driven backend' + C.close],
+                [C.dim + '[2026-01-18 12:46:03]' + C.close + ' ' + C.ok + ' OK ' + C.close + '  CI/CD green: Jenkins · Docker · SonarQube quality gate passed'],
+                [C.dim + '[2026-01-18 14:05:38]' + C.close + ' ' + C.warn + 'WARN' + C.close + '  demo build failed — hotfix deployed in 6 minutes'],
+                [C.dim + '[2026-01-18 14:05:51]' + C.close + ' ' + C.ok + ' OK ' + C.close + '  recovery verified · latency within SLA'],
+                [C.dim + '[2026-01-18 15:12:00]' + C.close + ' ' + C.info + 'INFO' + C.close + '  judging panel: code quality, impact & design review'],
+                [C.dim + '[2026-01-18 15:30:00]' + C.close + ' ' + C.ok + ' DONE' + C.close + ' ' + C.bold + 'RESULT: WINNER — Q1 Tech For Good Hackathon 2026' + C.close],
+                [C.dim + '──────────────────────────────────────────────────' + C.close],
+                [C.bold + ' impact: 1st place' + C.close + ' ' + C.dim + '·' + C.close + ' ' + C.cyan + 'Culture Champion 2026' + C.close + ' ' + C.dim + '·' + C.close + ' ' + C.warn + 'IDP & Q2 Hackathon Runner-Up' + C.close]
+            ], 95);
+        }
+
+        function scrollToId(id){
+            var el = document.getElementById(id);
+            if(el){
+                closeTerm();
+                setTimeout(function(){ el.scrollIntoView({behavior:'smooth'}); }, 140);
+            }
+        }
+
+        function exec(raw){
+            var cmd = (raw || '').trim();
+            append('<span class="text-gray-500">venkata@iiitn:~$</span> <span class="text-gray-100">' + escapeHtml(cmd) + '</span>');
+            if(!cmd){ return; }
+            history.push(cmd);
+            hIdx = history.length;
+            var parts = cmd.split(/\s+/);
+            var name = parts[0].toLowerCase();
+            var arg = parts.slice(1).join(' ');
+            switch(name){
+                case 'help': cmdHelp(); break;
+                case 'clear': case 'cls': out.innerHTML = ''; break;
+                case 'skills': cmdSkills(); break;
+                case 'hackathon': cmdHackathon(); break;
+                case 'whoami':
+                    printLines([
+                        [C.bold + 'Venkata Saikrishna Kodapaka' + C.close],
+                        [C.dim + 'Lead Java Developer (Backend) · 12+ years · hackathon winner' + C.close]
+                    ], 50);
+                    break;
+                case 'about': scrollToId('about'); break;
+                case 'experience': scrollToId('experience'); break;
+                case 'awards': scrollToId('awards'); break;
+                case 'contact': scrollToId('contact'); break;
+                case 'github':
+                    window.open('https://github.com/kvsaikrishnaiiitn', '_blank', 'noopener');
+                    printLines([[C.ok + '✔ opening github.com/kvsaikrishnaiiitn' + C.close]], 30);
+                    break;
+                case 'resume':
+                    window.open('assets/Venkata_Saikrishna_Resume.pdf', '_blank', 'noopener');
+                    printLines([[C.ok + '✔ serving résumé…' + C.close]], 30);
+                    break;
+                case 'ls':
+                    printLines([[C.cyan + 'about/  skills/  experience/  awards/  github/  contact/  resume.pdf' + C.close]], 40);
+                    break;
+                case 'pwd': printLines([['/home/venkata/portfolio']], 30); break;
+                case 'uname': printLines([['PortfolioOS 2026.1 LTS · Java 21 · Spring Boot · x86_64']], 30); break;
+                case 'date': printLines([[new Date().toString()]], 30); break;
+                case 'echo': printLines([[C.cyan + escapeHtml(arg) + C.close]], 30); break;
+                case 'ping': printLines([[C.ok + 'pong' + C.close + ' · 0.042ms']], 30); break;
+                case 'hello': case 'hi':
+                    printLines([[C.ok + 'hello! 👋 type "help" to get started' + C.close]], 40);
+                    break;
+                case 'sudo':
+                    printLines([[C.err + '⛔ permission denied: user is not in the sudoers file. This incident will be reported.' + C.close]], 60);
+                    break;
+                case 'rm':
+                    printLines([[C.err + '⛔ nice try — rm is disabled on this production-grade portfolio.' + C.close]], 60);
+                    break;
+                case 'exit': case 'quit': case 'close': closeTerm(); break;
+                default:
+                    printLines([
+                        [C.err + 'bash: ' + escapeHtml(name) + ': command not found' + C.close],
+                        [C.dim + "type 'help' for available commands" + C.close]
+                    ], 40);
+            }
+        }
+
+        input.addEventListener('keydown', function(e){
+            if(e.key === 'Enter'){
+                var v = input.value;
+                input.value = '';
+                exec(v);
+            } else if(e.key === 'ArrowUp'){
+                if(history.length){
+                    hIdx = Math.max(0, hIdx - 1);
+                    input.value = history[hIdx] || '';
+                    e.preventDefault();
+                }
+            } else if(e.key === 'ArrowDown'){
+                hIdx = Math.min(history.length, hIdx + 1);
+                input.value = history[hIdx] || '';
+                e.preventDefault();
+            } else if(e.key === 'Escape'){
+                closeTerm();
+            } else if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'l'){
+                out.innerHTML = '';
+                e.preventDefault();
+            }
         });
     })();
     </script>
