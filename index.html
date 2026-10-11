@@ -25,8 +25,9 @@
             --bg:#0a0e14; --line:rgba(148,163,184,.14);
         }
         html{background:var(--bg)}
-        body{font-family:'Space Grotesk',sans-serif;background:var(--bg)}
-        .mono{font-family:'JetBrains Mono',monospace}
+        body{font-family:'Space Grotesk',ui-sans-serif,system-ui,sans-serif;background:var(--bg)}
+        button,input,textarea,select{font-family:inherit}
+        .mono{font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
         ::selection{background:#3b82f6;color:#fff}
         ::-webkit-scrollbar{width:10px}
         ::-webkit-scrollbar-track{background:#0a0e14}
@@ -89,8 +90,7 @@
         .skill-bar{height:6px;border-radius:9999px;background:#1a2332;overflow:hidden}
         .skill-bar>span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#3b82f6,#22d3ee);width:0;transition:width 1.3s cubic-bezier(.2,.8,.2,1)}
 
-        /* Terminal */
-        .term-line{white-space:pre;line-height:1.55}
+        /* Terminal lines (shared by hero IDE card + terminal widget) */
 
         /* Award cards */
         .award-card{cursor:pointer;user-select:none}
@@ -109,7 +109,7 @@
         .term-scroll::-webkit-scrollbar-track{background:transparent}
         .term-scroll::-webkit-scrollbar-thumb{background:#30363d;border-radius:4px}
         .term-scroll::-webkit-scrollbar-thumb:hover{background:#484f58}
-        .term-line{white-space:pre-wrap;word-break:break-word}
+        .term-line{white-space:pre-wrap;word-break:break-word;line-height:1.55}
         .term-caret{caret-color:#3fb950}
 
         /* ===== Particle network canvas (hero) ===== */
@@ -216,8 +216,8 @@
                         <span class="ml-3 mono text-xs text-gray-500">VenkataSaikrishna.java</span>
                         <span class="ml-auto mono text-[10px] text-gray-600 hidden sm:inline">utf-8 · Java 21</span>
                     </div>
-                    <div id="term-body" class="mono text-[13px] px-5 py-4 min-h-[248px] text-gray-300"></div>
-                    <div class="px-5 py-3 border-t border-gray-800/70 bg-gray-900/40 mono text-xs">
+                    <div id="term-body" class="mono text-[11px] sm:text-[13px] px-3.5 sm:px-5 py-4 min-h-[248px] text-gray-300 overflow-x-hidden"></div>
+                    <div class="px-3.5 sm:px-5 py-3 border-t border-gray-800/70 bg-gray-900/40 mono text-xs">
                         <span class="text-gray-500">$ </span><span class="text-cyan-300">./deploy --to github-pages</span>
                         <span class="block mt-1.5 text-emerald-400"><i class="fa-solid fa-circle-check mr-1.5"></i>Live at kvsaikrishnaiiitn.github.io</span>
                     </div>
@@ -698,47 +698,111 @@
                 <p class="text-sm text-gray-500">Live contribution data, refreshed automatically from my GitHub activity.</p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-5">
-                <div class="card p-5 md:col-span-2 reveal">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="font-bold text-white text-sm mono"><i class="fa-solid fa-chart-column mr-2 text-blue-400"></i>contributions &amp; stats</h3>
-                        <a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="text-xs mono text-gray-500 hover:text-blue-400 transition"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>open profile</a>
+            <!-- Profile identity card -->
+            <div class="card gradient-border p-6 md:p-7 mb-6 reveal">
+                <div class="flex flex-col md:flex-row md:items-center gap-6">
+                    <div class="relative shrink-0 mx-auto md:mx-0">
+                        <img src="https://github.com/kvsaikrishnaiiitn.png" alt="Venkata Saikrishna Kodapaka" class="w-24 h-24 rounded-2xl border border-gray-700 shadow-lg shadow-black/40" loading="lazy">
+                        <span class="absolute -bottom-1.5 -right-1.5 w-6 h-6 rounded-full bg-emerald-400 border-4 border-[#0a0e14] flex items-center justify-center" title="Active on GitHub">
+                            <i class="fa-solid fa-check text-[10px] text-gray-900"></i>
+                        </span>
                     </div>
-                    <img src="https://github-readme-stats.vercel.app/api?username=kvsaikrishnaiiitn&show_icons=true&theme=github_dark&hide_border=true&include_all_commits=true&count_private=false" alt="GitHub stats" class="w-full rounded-lg" loading="lazy">
+                    <div class="flex-grow text-center md:text-left">
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-3">
+                            <h3 class="text-2xl font-bold text-white mono">kvsaikrishnaiiitn</h3>
+                            <a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-full text-xs font-semibold transition shadow-lg shadow-blue-900/30">
+                                <i class="fa-solid fa-user-plus mr-1.5"></i>Follow
+                            </a>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-2">Venkata Saikrishna Kodapaka — Lead Java Developer (Backend) · 12+ years · Microservices &amp; Distributed Systems</p>
+                        <div class="flex flex-wrap justify-center md:justify-start gap-2 mt-3.5">
+                            <span class="px-2.5 py-1 bg-gray-900/80 border border-gray-800 rounded-lg text-[11px] mono text-gray-400">Investment Banking</span>
+                            <span class="px-2.5 py-1 bg-gray-900/80 border border-gray-800 rounded-lg text-[11px] mono text-gray-400">Product Development</span>
+                            <span class="px-2.5 py-1 bg-gray-900/80 border border-gray-800 rounded-lg text-[11px] mono text-gray-400">E-commerce</span>
+                            <span class="px-2.5 py-1 bg-gray-900/80 border border-gray-800 rounded-lg text-[11px] mono text-gray-400">Open Source</span>
+                        </div>
+                    </div>
+                    <div class="shrink-0 mx-auto md:mx-0">
+                        <a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="px-5 py-3 bg-gray-800/80 hover:bg-gray-700/80 text-white border border-gray-700 rounded-xl font-semibold text-sm transition flex items-center gap-2">
+                            <i class="fa-brands fa-github text-base"></i> View Profile
+                        </a>
+                    </div>
                 </div>
-                <div class="card p-5 reveal">
-                    <h3 class="font-bold text-white text-sm mono mb-3"><i class="fa-solid fa-language mr-2 text-purple-400"></i>top languages</h3>
-                    <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=kvsaikrishnaiiitn&theme=github_dark&hide_border=true&layout=compact" alt="Top languages" class="rounded-lg" loading="lazy">
+            </div>
+
+            <!-- Live widget grid -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="card p-5 md:col-span-2 reveal group">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-white text-sm mono flex items-center gap-2"><i class="fa-solid fa-chart-column text-blue-400"></i>contributions &amp; stats</h3>
+                        <span class="flex items-center gap-2 text-[10px] mono font-bold text-emerald-400 tracking-wider">
+                            <span class="relative flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+                            </span>LIVE
+                        </span>
+                    </div>
+                    <div class="bg-[#0d1117] border border-gray-800/70 rounded-xl p-3 sm:p-4 transition group-hover:border-blue-500/40 group-hover:shadow-lg group-hover:shadow-blue-900/20">
+                        <img src="https://github-readme-stats.vercel.app/api?username=kvsaikrishnaiiitn&show_icons=true&theme=github_dark&hide_border=true&include_all_commits=true&count_private=false" alt="GitHub stats" class="w-full rounded-lg" loading="lazy">
+                    </div>
                 </div>
-                <div class="card p-5 reveal reveal-d1">
-                    <h3 class="font-bold text-white text-sm mono mb-3"><i class="fa-solid fa-fire mr-2 text-amber-400"></i>streak</h3>
-                    <img src="https://github-readme-streak-stats.herokuapp.com/?user=kvsaikrishnaiiitn&theme=dark&hide_border=true" alt="GitHub streak" class="rounded-lg" loading="lazy">
+                <div class="card p-5 reveal group">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-white text-sm mono flex items-center gap-2"><i class="fa-solid fa-language text-purple-400"></i>top languages</h3>
+                        <a href="https://github.com/kvsaikrishnaiiitn?tab=repositories" target="_blank" rel="noopener" class="text-[10px] mono text-gray-500 hover:text-blue-400 transition"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>open</a>
+                    </div>
+                    <div class="bg-[#0d1117] border border-gray-800/70 rounded-xl p-3 sm:p-4 transition group-hover:border-purple-500/40 group-hover:shadow-lg group-hover:shadow-purple-900/20">
+                        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=kvsaikrishnaiiitn&theme=github_dark&hide_border=true&layout=compact" alt="Top languages" class="w-full rounded-lg" loading="lazy">
+                    </div>
                 </div>
-                <div class="card p-5 md:col-span-2 reveal">
-                    <h3 class="font-bold text-white text-sm mono mb-3"><i class="fa-solid fa-wave-square mr-2 text-cyan-400"></i>activity</h3>
-                    <img src="https://github-readme-activity-graph.vercel.app/graph?username=kvsaikrishnaiiitn&theme=github_dark&hide_border=true&area=true" alt="Activity graph" class="w-full rounded-lg" loading="lazy">
+                <div class="card p-5 reveal reveal-d1 group">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-white text-sm mono flex items-center gap-2"><i class="fa-solid fa-fire text-amber-400"></i>streak</h3>
+                        <a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="text-[10px] mono text-gray-500 hover:text-blue-400 transition"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>open</a>
+                    </div>
+                    <div class="bg-[#0d1117] border border-gray-800/70 rounded-xl p-3 sm:p-4 transition group-hover:border-amber-500/40 group-hover:shadow-lg group-hover:shadow-amber-900/20">
+                        <img src="https://github-readme-streak-stats.herokuapp.com/?user=kvsaikrishnaiiitn&theme=dark&hide_border=true" alt="GitHub streak" class="w-full rounded-lg" loading="lazy">
+                    </div>
+                </div>
+                <div class="card p-5 md:col-span-2 reveal group">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-white text-sm mono flex items-center gap-2"><i class="fa-solid fa-wave-square text-cyan-400"></i>activity</h3>
+                        <a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="text-[10px] mono text-gray-500 hover:text-blue-400 transition"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>open</a>
+                    </div>
+                    <div class="bg-[#0d1117] border border-gray-800/70 rounded-xl p-3 sm:p-4 transition group-hover:border-cyan-500/40 group-hover:shadow-lg group-hover:shadow-cyan-900/20">
+                        <img src="https://github-readme-activity-graph.vercel.app/graph?username=kvsaikrishnaiiitn&theme=github_dark&hide_border=true&area=true" alt="Activity graph" class="w-full rounded-lg" loading="lazy">
+                    </div>
                 </div>
             </div>
 
             <!-- Open source focus -->
-            <div class="grid md:grid-cols-3 gap-5 mt-8">
+            <div class="grid md:grid-cols-3 gap-6 mt-8">
                 <a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="card p-6 block reveal group">
-                    <i class="fa-solid fa-sitemap text-2xl text-blue-400 mb-4 group-hover:scale-110 transition-transform inline-block"></i>
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-11 h-11 rounded-xl bg-blue-950/60 border border-blue-800/40 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform"><i class="fa-solid fa-sitemap text-lg"></i></div>
+                        <span class="mono text-[10px] font-bold text-gray-600">01</span>
+                    </div>
                     <h3 class="text-white font-bold mb-1.5">Data Structures &amp; Algorithms</h3>
                     <p class="text-xs text-gray-400 leading-relaxed">Clean, documented Java implementations of core DSA patterns — the playground I keep sharp.</p>
-                    <span class="text-xs mono text-blue-400 mt-3 inline-block">explore repos <i class="fa-solid fa-arrow-right ml-1"></i></span>
+                    <span class="text-xs mono text-blue-400 mt-4 inline-block">explore repos <i class="fa-solid fa-arrow-right ml-1"></i></span>
                 </a>
                 <a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="card p-6 block reveal reveal-d1 group">
-                    <i class="fa-solid fa-puzzle-piece text-2xl text-purple-400 mb-4 group-hover:scale-110 transition-transform inline-block"></i>
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-11 h-11 rounded-xl bg-purple-950/60 border border-purple-800/40 flex items-center justify-center text-purple-400 group-hover:scale-110 transition-transform"><i class="fa-solid fa-puzzle-piece text-lg"></i></div>
+                        <span class="mono text-[10px] font-bold text-gray-600">02</span>
+                    </div>
                     <h3 class="text-white font-bold mb-1.5">Design Pattern Templates</h3>
                     <p class="text-xs text-gray-400 leading-relaxed">Reusable Gang-of-Four and enterprise integration templates wired for Spring ecosystems.</p>
-                    <span class="text-xs mono text-blue-400 mt-3 inline-block">explore repos <i class="fa-solid fa-arrow-right ml-1"></i></span>
+                    <span class="text-xs mono text-blue-400 mt-4 inline-block">explore repos <i class="fa-solid fa-arrow-right ml-1"></i></span>
                 </a>
                 <a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="card p-6 block reveal reveal-d2 group">
-                    <i class="fa-solid fa-cloud text-2xl text-cyan-400 mb-4 group-hover:scale-110 transition-transform inline-block"></i>
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="w-11 h-11 rounded-xl bg-cyan-950/60 border border-cyan-800/40 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform"><i class="fa-solid fa-cloud text-lg"></i></div>
+                        <span class="mono text-[10px] font-bold text-gray-600">03</span>
+                    </div>
                     <h3 class="text-white font-bold mb-1.5">Spring Cloud Microservices</h3>
                     <p class="text-xs text-gray-400 leading-relaxed">Reference configurations: Kafka wiring, resilience, observability and containerized deploys.</p>
-                    <span class="text-xs mono text-blue-400 mt-3 inline-block">explore repos <i class="fa-solid fa-arrow-right ml-1"></i></span>
+                    <span class="text-xs mono text-blue-400 mt-4 inline-block">explore repos <i class="fa-solid fa-arrow-right ml-1"></i></span>
                 </a>
             </div>
         </section>
