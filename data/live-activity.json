@@ -1,0 +1,192 @@
+{
+  "generated_at": "2026-10-11T18:00:29.319Z",
+  "owner": "kvsaikrishnaiiitn",
+  "totals": {
+    "repositories": 13,
+    "stars": 0,
+    "forks": 0
+  },
+  "repos": [
+    {
+      "name": "kvsaikrishnaiiitn.github.io",
+      "full_name": "kvsaikrishnaiiitn/kvsaikrishnaiiitn.github.io",
+      "description": "Personal Portfolio & Engineering Dashboard | Lead Java Developer (Backend) | 12+ Years Experience | High-Throughput Microservices & Distributed Systems Architecture.",
+      "html_url": "https://github.com/kvsaikrishnaiiitn/kvsaikrishnaiiitn.github.io",
+      "language": "HTML",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "pushed_at": "2026-10-11T10:45:09Z",
+      "archived": false,
+      "topics": []
+    },
+    {
+      "name": "order-service",
+      "full_name": "kvsaikrishnaiiitn/order-service",
+      "description": null,
+      "html_url": "https://github.com/kvsaikrishnaiiitn/order-service",
+      "language": "Java",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "pushed_at": "2025-04-28T03:06:14Z",
+      "archived": false,
+      "topics": []
+    },
+    {
+      "name": "data-structures-and-algorithms",
+      "full_name": "kvsaikrishnaiiitn/data-structures-and-algorithms",
+      "description": null,
+      "html_url": "https://github.com/kvsaikrishnaiiitn/data-structures-and-algorithms",
+      "language": "Java",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "pushed_at": "2025-04-24T06:40:25Z",
+      "archived": false,
+      "topics": []
+    },
+    {
+      "name": "big_company",
+      "full_name": "kvsaikrishnaiiitn/big_company",
+      "description": "This repo is for code assignment",
+      "html_url": "https://github.com/kvsaikrishnaiiitn/big_company",
+      "language": "Java",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "pushed_at": "2025-03-04T13:15:22Z",
+      "archived": false,
+      "topics": []
+    },
+    {
+      "name": "microservices-components",
+      "full_name": "kvsaikrishnaiiitn/microservices-components",
+      "description": "This repo is for all Microservices components with Spring Boot",
+      "html_url": "https://github.com/kvsaikrishnaiiitn/microservices-components",
+      "language": "Java",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "pushed_at": "2024-12-03T16:34:17Z",
+      "archived": false,
+      "topics": []
+    },
+    {
+      "name": "kafka-utility",
+      "full_name": "kvsaikrishnaiiitn/kafka-utility",
+      "description": null,
+      "html_url": "https://github.com/kvsaikrishnaiiitn/kafka-utility",
+      "language": "Java",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "pushed_at": "2024-11-29T14:04:05Z",
+      "archived": false,
+      "topics": []
+    },
+    {
+      "name": "terraform_iac",
+      "full_name": "kvsaikrishnaiiitn/terraform_iac",
+      "description": null,
+      "html_url": "https://github.com/kvsaikrishnaiiitn/terraform_iac",
+      "language": "HCL",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "pushed_at": "2024-08-26T19:35:37Z",
+      "archived": false,
+      "topics": []
+    },
+    {
+      "name": "microservices",
+      "full_name": "kvsaikrishnaiiitn/microservices",
+      "description": "This is for Java Microservices using Spring Boot and Spring Cloud technologies",
+      "html_url": "https://github.com/kvsaikrishnaiiitn/microservices",
+      "language": "Java",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "pushed_at": "2022-12-02T04:41:27Z",
+      "archived": false,
+      "topics": []
+    },
+    {
+      "name": "h2-crud",
+      "full_name": "kvsaikrishnaiiitn/h2-crud",
+      "description": null,
+      "html_url": "https://github.com/kvsaikrishnaiiitn/h2-crud",
+      "language": "Java",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "pushed_at": "2022-11-30T16:21:52Z",
+      "archived": false,
+      "topics": []
+    },
+    {
+      "name": "core-java",
+      "full_name": "kvsaikrishnaiiitn/core-java",
+      "description": null,
+      "html_url": "https://github.com/kvsaikrishnaiiitn/core-java",
+      "language": "Java",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "pushed_at": "2022-10-09T03:58:01Z",
+      "archived": false,
+      "topics": []
+    },
+    {
+      "name": "design-patterns",
+      "full_name": "kvsaikrishnaiiitn/design-patterns",
+      "description": null,
+      "html_url": "https://github.com/kvsaikrishnaiiitn/design-patterns",
+      "language": "Java",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "pushed_at": "2022-08-07T18:11:13Z",
+      "archived": false,
+      "topics": []
+    },
+    {
+      "name": "spring-security",
+      "full_name": "kvsaikrishnaiiitn/spring-security",
+      "description": null,
+      "html_url": "https://github.com/kvsaikrishnaiiitn/spring-security",
+      "language": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "pushed_at": "2022-07-29T08:22:13Z",
+      "archived": false,
+      "topics": []
+    }
+  ],
+  "events": [
+    {
+      "id": "23667647474",
+      "type": "PushEvent",
+      "created_at": "2026-10-11T06:47:12Z",
+      "repo": {
+        "id": 1414021175,
+        "name": "kvsaikrishnaiiitn/kvsaikrishnaiiitn.github.io",
+        "url": "https://api.github.com/repos/kvsaikrishnaiiitn/kvsaikrishnaiiitn.github.io"
+      },
+      "payload": {
+        "repository_id": 1414021175,
+        "push_id": 46115014831,
+        "ref": "refs/heads/main",
+        "head": "526ed7b429d6767c8bd6897c14d4d39735014c85",
+        "before": "801fd1cef937d37562447eecf53f26746820d117"
+      }
+    },
+    {
+      "id": "23666399446",
+      "type": "CreateEvent",
+      "created_at": "2026-10-11T06:42:52Z",
+      "repo": {
+        "id": 1414021175,
+        "name": "kvsaikrishnaiiitn/kvsaikrishnaiiitn.github.io",
+        "url": "https://api.github.com/repos/kvsaikrishnaiiitn/kvsaikrishnaiiitn.github.io"
+      },
+      "payload": {
+        "ref": "main",
+        "ref_type": "branch",
+        "full_ref": "refs/heads/main",
+        "master_branch": "main",
+        "description": "Personal Portfolio & Engineering Dashboard | Lead Java Developer (Backend) | 12+ Years Experience | High-Throughput Microservices & Distributed Systems Architecture.",
+        "pusher_type": "user"
+      }
+    }
+  ]
+}

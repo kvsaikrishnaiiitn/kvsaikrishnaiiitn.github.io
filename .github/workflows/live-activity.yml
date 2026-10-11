@@ -1,0 +1,76 @@
+# Keeps the portfolio's live data fresh without any third-party service.
+#
+# Every 6 hours (plus on-demand and once when this workflow lands on main) it
+# snapshots this account's public repositories and recent events into
+# data/live-activity.json. index.html prefers that snapshot over the
+# unauthenticated GitHub REST API (60 req/h per IP), falling back to the live
+# API if the snapshot is missing — so visitors always see repository activity,
+# and the committed snapshot needs no client-side rate-limit budget.
+#
+# GITHUB_TOKEN pushes do not re-trigger workflows, so this cannot loop.
+# Pages note: same reason, the commit-back does not trigger a Pages rebuild by
+# itself — the final step requests one explicitly via the Pages API.
+name: Sync live repository activity
+
+on:
+  schedule:
+    - cron: '25 */6 * * *'   # every 6h at :25 — off the crowded top-of-hour queue
+  workflow_dispatch:         # run manually any time (Settings → Actions → this workflow)
+  push:
+    branches: [main]
+    paths:                   # bootstrap once when the workflow first lands
+      - '.github/workflows/live-activity.yml'
+      - 'scripts/sync-live-data.mjs'
+
+# Least privilege: read the repo, push the snapshot file, request a Pages build.
+permissions:
+  contents: write
+  pages: write
+
+# One sync at a time; queued runs coalesce instead of racing each other.
+concurrency:
+  group: live-activity-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build activity snapshot
+        run: node scripts/sync-live-data.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit refreshed snapshot
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/live-activity.json
+          if git diff --cached --quiet; then
+            echo 'Snapshot unchanged - nothing to commit.'
+            exit 0
+          fi
+          git commit -m 'chore(live): refresh repository activity snapshot [skip ci]'
+          git push
+
+      # GITHUB_TOKEN pushes deliberately do not trigger other workflows (that is
+      # what stops the loop above), which also means no automatic Pages rebuild.
+      # Ask for one explicitly. The site already prefers live API data, so a
+      # denied request is cosmetic only - never let it fail the sync.
+      - name: Request GitHub Pages rebuild
+        if: github.event_name != 'pull_request'
+        continue-on-error: true
+        run: |
+          curl -sS -o /dev/null -w 'Pages build requested: HTTP %{http_code}\n' \
+            -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pages/builds"

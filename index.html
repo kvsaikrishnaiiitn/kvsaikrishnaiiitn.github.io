@@ -929,6 +929,22 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Live repository showcase — refreshed by the "Sync live repository activity"
+                     GitHub Action (data/live-activity.json), live API used as fallback -->
+                <div class="card p-5 md:col-span-2 min-w-0 reveal group">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-code-branch text-sky-400"></i>Live Repositories</h3>
+                        <span id="repo-sync" class="text-[10px] mono font-bold tracking-wider text-gray-500">syncing…</span>
+                    </div>
+                    <div class="bg-[#0d1117] border border-gray-800/70 rounded-xl p-3 sm:p-4 transition group-hover:border-sky-500/40 group-hover:shadow-lg group-hover:shadow-sky-900/20">
+                        <div id="repo-showcase" class="min-h-[132px]">
+                            <div class="flex items-center justify-center gap-2 py-8 text-xs mono text-gray-500">
+                                <i class="fa-solid fa-spinner fa-spin text-sky-400"></i> loading repository snapshot…
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Open source focus -->
@@ -2038,7 +2054,8 @@
                         '<p class="text-xs text-gray-300 truncate">' + describe(e) + ' <span class="text-sky-400 font-semibold">' + esc(e.repo.name) + '</span></p>' +
                         '<p class="text-[10px] mono text-gray-500 mt-0.5">' + esc(e.type.replace('Event', '')) + ' · ' + timeAgo(e.created_at) + '</p>' +
                     '</div>' +
-                    '<a href="' + esc(e.repo.url) + '" target="_blank" rel="noopener" class="shrink-0 text-gray-600 hover:text-blue-400 transition text-xs" title="Open repo"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>' +
+                    /* repo.url points at the API JSON — build the browsable page URL from the name */
+                    '<a href="https://github.com/' + esc(e.repo.name) + '" target="_blank" rel="noopener" class="shrink-0 text-gray-600 hover:text-blue-400 transition text-xs" title="Open repo"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>' +
                 '</li>';
             });
             html += '</ul>';
@@ -2062,7 +2079,124 @@
             return r.json();
         })
         .then(render)
-        .catch(fallback);
+        .catch(fromSnapshot);   /* rate-limited? serve the Action-refreshed snapshot */
+
+        /* Fallback path: the CI snapshot (refreshed every 6h by the workflow) keeps
+           the feed alive when the unauthenticated API quota (60/h per IP) is spent. */
+        function fromSnapshot(){
+            fetch('data/live-activity.json', { cache: 'no-store' })
+                .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+                .then(function(d){
+                    if(d && Array.isArray(d.events) && d.events.length){ render(d.events); }
+                    else { fallback(); }
+                })
+                .catch(fallback);
+        }
+    })();
+    </script>
+
+    <!-- ===== Live repo showcase: Action snapshot first, live API fallback ===== -->
+    <script>
+    (function(){
+        'use strict';
+        var host = document.getElementById('repo-showcase');
+        var syncEl = document.getElementById('repo-sync');
+        if(!host) return;
+        var USER = 'kvsaikrishnaiiitn';
+
+        /* GitHub language → dot colour (subset covering this account + common cases) */
+        var LANG = {
+            Java:'#b07219', JavaScript:'#f1e05a', TypeScript:'#3178c6', HTML:'#e34c26',
+            CSS:'#563d7c', SCSS:'#c6538c', Shell:'#89e051', Python:'#3572A5',
+            Kotlin:'#A97BFF', HCL:'#844FBA', Dockerfile:'#384d54', Go:'#00ADD8',
+            Ruby:'#701516', 'C++':'#f34b7d', C:'#555555', Rust:'#dea584',
+            Vue:'#41b883', PHP:'#4F5D95', 'Jupyter Notebook':'#DA5B0B', Makefile:'#427819'
+        };
+
+        function esc(s){
+            return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+        function ago(iso){
+            var t = (Date.now() - new Date(iso).getTime()) / 1000;
+            if(!iso || isNaN(t)) return '';
+            if(t < 3600) return Math.max(1, Math.floor(t / 60)) + 'm ago';
+            if(t < 86400) return Math.floor(t / 3600) + 'h ago';
+            var d = Math.floor(t / 86400);
+            if(d < 30) return d + 'd ago';
+            if(d < 365) return Math.floor(d / 30) + 'mo ago';
+            return Math.floor(d / 365) + 'y ago';
+        }
+
+        function render(repos, meta){
+            var list = (repos || []).filter(function(r){ return !r.fork; }).slice(0, 6);
+            if(!list.length){ fail(); return; }
+            var html = '<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">';
+            list.forEach(function(r){
+                var dot = LANG[r.language] || '#9ca3af';
+                html += '<a href="' + esc(r.html_url) + '" target="_blank" rel="noopener" ' +
+                    'class="block rounded-xl border border-gray-800/70 bg-gray-900/40 p-3.5 hover:border-sky-500/40 hover:bg-gray-900/70 transition group/repo">' +
+                    '<div class="flex items-start justify-between gap-2 mb-1.5">' +
+                        '<span class="mono text-xs font-bold text-sky-400 truncate"><i class="fa-solid fa-book-bookmark mr-1.5 text-gray-600 group-hover/repo:text-sky-500 transition"></i>' + esc(r.name) + '</span>' +
+                        (r.archived
+                            ? '<span class="shrink-0 text-[9px] mono text-amber-500/90 border border-amber-700/40 rounded px-1">archived</span>'
+                            : (/\.github\.io$/.test(r.name)
+                                ? '<span class="shrink-0 text-[9px] mono text-emerald-400/90 border border-emerald-700/40 rounded px-1">portfolio</span>'
+                                : '')) +
+                    '</div>' +
+                    '<p class="text-[11px] text-gray-400 leading-snug mb-2.5 line-clamp-2 min-h-[2.2em]">' + esc(r.description || 'No description provided.') + '</p>' +
+                    '<div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] mono text-gray-500">' +
+                        (r.language ? '<span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full" style="background:' + dot + '"></span>' + esc(r.language) + '</span>' : '') +
+                        '<span><i class="fa-solid fa-star text-amber-500/70 mr-1"></i>' + (r.stargazers_count || 0) + '</span>' +
+                        '<span><i class="fa-solid fa-code-fork text-gray-500 mr-1"></i>' + (r.forks_count || 0) + '</span>' +
+                        '<span class="ml-auto"><i class="fa-regular fa-clock mr-1"></i>' + ago(r.pushed_at) + '</span>' +
+                    '</div>' +
+                '</a>';
+            });
+            html += '</div>';
+            host.innerHTML = html;
+
+            if(syncEl){
+                if(meta && meta.source === 'actions'){
+                    syncEl.innerHTML = '<span class="text-emerald-400">CI snapshot</span>' +
+                        '<span class="text-gray-600 mx-1.5">·</span><span class="text-gray-500">updated ' + ago(meta.at) + '</span>' +
+                        '<span class="text-gray-600 mx-1.5">·</span><span class="text-gray-600">GitHub Action</span>';
+                } else {
+                    syncEl.innerHTML = '<span class="text-sky-400">live</span>' +
+                        '<span class="text-gray-600 mx-1.5">·</span><span class="text-gray-500">GitHub API</span>';
+                }
+            }
+        }
+
+        function fail(){
+            host.innerHTML =
+                '<div class="text-center py-8">' +
+                    '<i class="fa-solid fa-folder-open text-2xl text-gray-600 mb-3"></i>' +
+                    '<p class="text-xs text-gray-400 mb-3">Repository showcase is temporarily unavailable.</p>' +
+                    '<a href="https://github.com/' + USER + '?tab=repositories" target="_blank" rel="noopener" class="text-xs mono text-blue-400 hover:text-cyan-300 transition">browse repositories on GitHub <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>' +
+                '</div>';
+            if(syncEl) syncEl.innerHTML = '<span class="text-amber-500">offline</span>';
+        }
+
+        /* No rate limits, instant paint: prefer the CI-refreshed snapshot, then go live. */
+        function loadSnapshot(){
+            fetch('data/live-activity.json', { cache: 'no-store' })
+                .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+                .then(function(d){
+                    if(d && Array.isArray(d.repos) && d.repos.length && d.generated_at){
+                        render(d.repos, { source: 'actions', at: d.generated_at });
+                    } else { loadLive(); }
+                })
+                .catch(loadLive);
+        }
+        function loadLive(){
+            fetch('https://api.github.com/users/' + USER + '/repos?sort=pushed&per_page=30', {
+                headers: { 'Accept': 'application/vnd.github+json' }
+            })
+            .then(function(r){ if(!r.ok) throw new Error('repos ' + r.status); return r.json(); })
+            .then(function(list){ render(list, { source: 'live' }); })
+            .catch(fail);
+        }
+        loadSnapshot();
     })();
     </script>
 </body>

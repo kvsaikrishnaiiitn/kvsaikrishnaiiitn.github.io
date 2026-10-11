@@ -13,6 +13,10 @@
   <img src="https://img.shields.io/badge/Azure-AZ--900-0078d4?style=for-the-badge&logo=microsoftazure" alt="Azure AZ-900">
 </p>
 
+<p align="center">
+  <a href="https://github.com/kvsaikrishnaiiitn/kvsaikrishnaiiitn.github.io/actions/workflows/live-activity.yml"><img src="https://img.shields.io/github/actions/workflow/status/kvsaikrishnaiiitn/kvsaikrishnaiiitn.github.io/live-activity.yml?style=flat-square&label=live%20activity%20sync&logo=githubactions&logoColor=white&color=2563EB" alt="Live activity sync workflow" /></a>
+</p>
+
 ---
 
 ## 👋 About Me
