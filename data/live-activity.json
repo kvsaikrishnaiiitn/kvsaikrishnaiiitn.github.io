@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-11T18:00:29.319Z",
+  "generated_at": "2026-10-11T20:05:25.030Z",
   "owner": "kvsaikrishnaiiitn",
   "totals": {
     "repositories": 13,
@@ -15,7 +15,7 @@
       "language": "HTML",
       "stargazers_count": 0,
       "forks_count": 0,
-      "pushed_at": "2026-10-11T10:45:09Z",
+      "pushed_at": "2026-10-11T19:59:33Z",
       "archived": false,
       "topics": []
     },
@@ -154,6 +154,23 @@
   ],
   "events": [
     {
+      "id": "23710105620",
+      "type": "PushEvent",
+      "created_at": "2026-10-11T19:20:08Z",
+      "repo": {
+        "id": 1414021175,
+        "name": "kvsaikrishnaiiitn/kvsaikrishnaiiitn.github.io",
+        "url": "https://api.github.com/repos/kvsaikrishnaiiitn/kvsaikrishnaiiitn.github.io"
+      },
+      "payload": {
+        "repository_id": 1414021175,
+        "push_id": 46160169061,
+        "ref": "refs/heads/main",
+        "head": "04169cc6f3361d4e8f00ed18dc823280fa989d50",
+        "before": "0ec8f1cf57cc36a70715e5ce908ab1ba4882c7fa"
+      }
+    },
+    {
       "id": "23667647474",
       "type": "PushEvent",
       "created_at": "2026-10-11T06:47:12Z",
@@ -188,5 +205,28 @@
         "pusher_type": "user"
       }
     }
-  ]
+  ],
+  "languages": [
+    {
+      "name": "Java",
+      "bytes": 339799
+    },
+    {
+      "name": "HTML",
+      "bytes": 168685
+    },
+    {
+      "name": "JavaScript",
+      "bytes": 13934
+    },
+    {
+      "name": "HCL",
+      "bytes": 1324
+    },
+    {
+      "name": "CSS",
+      "bytes": 1272
+    }
+  ],
+  "languages_repos": 12
 }

@@ -27,7 +27,6 @@
     <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/fa-solid-900.woff2">
     <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/space-grotesk-latin.woff2">
     <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/jetbrains-mono-latin.woff2">
-    <link rel="preconnect" href="https://github-readme-stats.vercel.app">
     <link rel="preconnect" href="https://streak-stats.demolab.com">
     <link rel="preconnect" href="https://github-contributions-api.jogruber.de">
     <link rel="preconnect" href="https://api.github.com">
@@ -198,7 +197,7 @@
     <!-- Header Navigation -->
     <header class="sticky top-0 z-50 border-b border-gray-800/70 bg-[#0a0e14]/75 backdrop-blur-xl">
         <div class="max-w-6xl mx-auto px-5 md:px-6 h-16 flex items-center justify-between">
-            <a href="#home" class="group flex items-center gap-3" title="Venkata Saikrishna Kodapaka" aria-label="vsk — Venkata Saikrishna Kodapaka, home">
+            <a href="#home" class="group flex items-center gap-3" title="Venkata Saikrishna Kodapaka" aria-label="kvsaikrishnaiiitn — Venkata Saikrishna Kodapaka, home">
                 <span class="mono text-blue-400 font-bold text-base tracking-tight">&lt;kvsaikrishnaiiitn /&gt;</span>
                 <span class="hidden lg:inline border-l border-gray-700/80 pl-3 text-[13px] font-sans text-gray-400 group-hover:text-gray-200 transition-colors">Lead Java Developer</span>
             </a>
@@ -909,7 +908,12 @@
                         <a href="https://github.com/kvsaikrishnaiiitn?tab=repositories" target="_blank" rel="noopener" class="text-[10px] mono text-gray-500 hover:text-blue-400 transition"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>open</a>
                     </div>
                     <div class="bg-[#0d1117] border border-gray-800/70 rounded-xl p-3 sm:p-4 transition group-hover:border-purple-500/40 group-hover:shadow-lg group-hover:shadow-purple-900/20">
-                        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=kvsaikrishnaiiitn&theme=github_dark&hide_border=true&layout=compact" alt="Top languages" class="w-full max-w-[420px] mx-auto rounded-lg" loading="lazy">
+                        <!-- self-rendered from the CI snapshot / live API (no third-party image, site fonts) -->
+                        <div id="top-langs" class="min-h-[132px]">
+                            <div class="flex items-center justify-center gap-2 py-8 text-xs mono text-gray-500">
+                                <i class="fa-solid fa-spinner fa-spin text-purple-400"></i> computing language share…
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card p-5 reveal reveal-d1 group">
@@ -918,7 +922,12 @@
                         <a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="text-[10px] mono text-gray-500 hover:text-blue-400 transition"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>open</a>
                     </div>
                     <div class="bg-[#0d1117] border border-gray-800/70 rounded-xl p-3 sm:p-4 transition group-hover:border-amber-500/40 group-hover:shadow-lg group-hover:shadow-amber-900/20">
-                        <img src="https://streak-stats.demolab.com/?user=kvsaikrishnaiiitn&theme=dark&hide_border=true" alt="GitHub streak" class="w-full max-w-[520px] mx-auto rounded-lg" loading="lazy">
+                        <!-- computed in-page from the same live contribution payload as the graph (no third-party image) -->
+                        <div id="streak-panel" class="min-h-[132px]">
+                            <div class="flex items-center justify-center gap-2 py-8 text-xs mono text-gray-500">
+                                <i class="fa-solid fa-spinner fa-spin text-amber-400"></i> counting streak…
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1899,6 +1908,7 @@
         'use strict';
         var host = document.getElementById('contrib-graph');
         var totalEl = document.getElementById('contrib-total');
+        var streakEl = document.getElementById('streak-panel');
         if(!host) return;
 
         /* On-brand palette: zero activity → deep blue → sky → cyan */
@@ -1953,6 +1963,57 @@
                 statTile('fa-gauge-high', 'text-cyan-300', active ? (total / active).toFixed(1) : '0.0', 'text-cyan-300', 'Avg / Active Day', 'when commits happen') +
                 statTile('fa-seedling', 'text-violet-400', first ? relShort(first.date) : '—', 'text-violet-400', 'Active Since', first ? niceDate(first.date) : '—') +
                 statTile('fa-clock-rotate-left', 'text-blue-400', last ? relShort(last.date) : '—', 'text-blue-400', 'Last Commit', last ? niceDate(last.date) : '—');
+        }
+
+        /* Streak panel — computed from the same payload as the graph (replaces the
+           third-party streak image; same palette, same fonts, zero extra requests) */
+        function fillStreak(days){
+            if(!streakEl) return;
+            var byDate = {};
+            days.forEach(function(d){ byDate[d.date] = d.count || 0; });
+            function key(dt){ return dt.toISOString().slice(0, 10); }
+            /* current streak: walk backwards from today; a quiet today doesn't
+               break it (the day isn't over) — GitHub streak semantics */
+            var now = new Date();
+            var cur = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+            if((byDate[key(cur)] || 0) === 0){ cur.setUTCDate(cur.getUTCDate() - 1); }
+            var current = 0;
+            while((byDate[key(cur)] || 0) > 0){ current++; cur.setUTCDate(cur.getUTCDate() - 1); }
+            var longest = 0, run = 0;
+            days.forEach(function(d){
+                if((d.count || 0) > 0){ run++; if(run > longest) longest = run; }
+                else { run = 0; }
+            });
+            var tail = days.slice(-30);
+            var strip = tail.map(function(d){
+                return '<span class="inline-block w-2.5 h-2.5 rounded-[3px]" style="background:' + (LEVEL_FILL[d.level] || LEVEL_FILL[0]) + '" title="' + esc(d.count + ' contribution' + (d.count === 1 ? '' : 's') + ' · ' + niceDate(d.date)) + '"></span>';
+            }).join('');
+            streakEl.innerHTML =
+                '<div class="flex flex-wrap items-center gap-x-10 gap-y-4">' +
+                    '<div>' +
+                        '<div class="flex items-center gap-2">' +
+                            '<i class="fa-solid fa-fire text-amber-400"></i>' +
+                            '<span class="text-2xl font-black text-white leading-none">' + current + '</span>' +
+                            '<span class="text-xs font-bold text-gray-300">day' + (current === 1 ? '' : 's') + '</span>' +
+                        '</div>' +
+                        '<div class="mt-1.5 text-[10px] mono text-gray-500">current streak</div>' +
+                    '</div>' +
+                    '<div>' +
+                        '<div class="flex items-center gap-2">' +
+                            '<i class="fa-solid fa-trophy text-violet-400"></i>' +
+                            '<span class="text-2xl font-black text-white leading-none">' + longest + '</span>' +
+                            '<span class="text-xs font-bold text-gray-300">day' + (longest === 1 ? '' : 's') + '</span>' +
+                        '</div>' +
+                        '<div class="mt-1.5 text-[10px] mono text-gray-500">longest streak</div>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="mt-4">' +
+                    '<div class="flex items-center justify-between mb-1.5">' +
+                        '<span class="text-[10px] mono text-gray-500">last ' + tail.length + ' days</span>' +
+                        '<span class="text-[10px] mono text-gray-600">live contribution data</span>' +
+                    '</div>' +
+                    '<div class="flex flex-wrap gap-1">' + strip + '</div>' +
+                '</div>';
         }
 
         function render(days){
@@ -2012,6 +2073,7 @@
 
             host.innerHTML = '<div class="overflow-x-auto pb-1">' + svg + '</div>' + legend;
             fillStats(days);
+            fillStreak(days);
             if(totalEl){
                 totalEl.innerHTML = '<span class="text-emerald-400">' + total + '</span>' +
                     '<span class="text-gray-600 mx-1.5">·</span><span class="text-gray-500">last 12 months</span>';
@@ -2031,6 +2093,14 @@
                     '<div class="col-span-full flex flex-col items-center justify-center gap-2 py-6 text-center">' +
                         '<i class="fa-solid fa-chart-column text-2xl text-gray-600"></i>' +
                         '<p class="text-xs text-gray-400">Contribution stats are temporarily unavailable.</p>' +
+                        '<a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="text-xs mono text-blue-400 hover:text-cyan-300 transition">view on GitHub <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>' +
+                    '</div>';
+            }
+            if(streakEl){
+                streakEl.innerHTML =
+                    '<div class="flex flex-col items-center justify-center gap-2 py-6 text-center">' +
+                        '<i class="fa-solid fa-fire text-2xl text-gray-600"></i>' +
+                        '<p class="text-xs text-gray-400">Streak data is temporarily unavailable.</p>' +
                         '<a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="text-xs mono text-blue-400 hover:text-cyan-300 transition">view on GitHub <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>' +
                     '</div>';
             }
@@ -2255,6 +2325,91 @@
             .then(function(r){ if(!r.ok) throw new Error('repos ' + r.status); return r.json(); })
             .then(function(list){ render(list, { source: 'live' }); })
             .catch(fail);
+        }
+        whenVisible(host, loadSnapshot);
+    })();
+    </script>
+
+    <!-- ===== Top Languages (self-rendered bar panel: CI snapshot, live API fallback) ===== -->
+    <script>
+    (function(){
+        'use strict';
+        var host = document.getElementById('top-langs');
+        if(!host) return;
+        var USER = 'kvsaikrishnaiiitn';
+        /* GitHub linguist palette for the well-known languages, neutral gray otherwise */
+        var LANG = { Java:'#b07219', JavaScript:'#f1e05a', TypeScript:'#3178c6', HTML:'#e34c26', CSS:'#563d7c', SCSS:'#c6538c', Shell:'#89e051', Python:'#3572A5', Kotlin:'#A97BFF', HCL:'#844FBA', Dockerfile:'#384d54', Go:'#00ADD8', Ruby:'#701516', 'C++':'#f34b7d', C:'#555555', Rust:'#dea584', Vue:'#41b883', PHP:'#4F5D95', 'Jupyter Notebook':'#DA5B0B', Makefile:'#427819' };
+        function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+        function row(name, color, pct){
+            return '<div class="mb-3 last:mb-0">' +
+                '<div class="flex items-center justify-between text-xs mb-1.5">' +
+                    '<span class="flex items-center gap-2 text-gray-300 font-semibold"><span class="w-2.5 h-2.5 rounded-full" style="background:' + color + '"></span>' + esc(name) + '</span>' +
+                    '<span class="mono text-gray-500">' + pct.toFixed(1) + '%</span>' +
+                '</div>' +
+                '<div class="h-1.5 rounded-full bg-gray-800/80 overflow-hidden">' +
+                    '<span class="block h-full rounded-full" style="width:' + Math.max(pct, 2).toFixed(1) + '%;background:' + color + '"></span>' +
+                '</div>' +
+            '</div>';
+        }
+        function render(list, repos, source){
+            var total = list.reduce(function(s, l){ return s + (l.bytes || 0); }, 0);
+            if(!total){ fail(); return; }
+            var top = list.slice(0, 5);
+            var restBytes = total - top.reduce(function(s, l){ return s + (l.bytes || 0); }, 0);
+            var html = top.map(function(l){
+                return row(l.name, LANG[l.name] || '#9ca3af', l.bytes / total * 100);
+            }).join('');
+            if(restBytes > 0){ html += row('Other', '#6b7280', restBytes / total * 100); }
+            host.innerHTML =
+                '<div class="flex items-center justify-between mb-3 text-[10px] mono text-gray-600">' +
+                    '<span>byte share · ' + repos + ' public repos</span>' +
+                    (source === 'actions'
+                        ? '<span class="text-emerald-400">CI snapshot</span>'
+                        : '<span class="text-sky-400">live</span>') +
+                '</div>' + html;
+        }
+        function fail(){
+            host.innerHTML =
+                '<div class="flex flex-col items-center justify-center gap-2 py-8 text-center">' +
+                    '<i class="fa-solid fa-language text-2xl text-gray-600"></i>' +
+                    '<p class="text-xs text-gray-400">Language stats are temporarily unavailable.</p>' +
+                    '<a href="https://github.com/kvsaikrishnaiiitn?tab=repositories" target="_blank" rel="noopener" class="text-xs mono text-blue-400 hover:text-cyan-300 transition">browse repositories <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>' +
+                '</div>';
+        }
+        /* live fallback: aggregate /languages across the most recently pushed repos */
+        function loadLive(){
+            fetch('https://api.github.com/users/' + USER + '/repos?sort=pushed&per_page=12', { headers: { 'Accept': 'application/vnd.github+json' } })
+                .then(function(r){ if(!r.ok){ throw new Error('repos ' + r.status); } return r.json(); })
+                .then(function(repos){
+                    var mine = repos.filter(function(r){ return !r.fork && !r.private; }).slice(0, 8);
+                    return Promise.all(mine.map(function(r){
+                        return fetch('https://api.github.com/repos/' + r.full_name + '/languages', { headers: { 'Accept': 'application/vnd.github+json' } })
+                            .then(function(x){ return x.ok ? x.json() : {}; })
+                            .catch(function(){ return {}; });
+                    })).then(function(all){
+                        var totals = {};
+                        all.forEach(function(langs){
+                            for(var k in langs){ totals[k] = (totals[k] || 0) + langs[k]; }
+                        });
+                        var list = Object.keys(totals).map(function(k){ return { name: k, bytes: totals[k] }; })
+                            .sort(function(a, b){ return b.bytes - a.bytes; });
+                        render(list, mine.length, 'live');
+                    });
+                })
+                .catch(fail);
+        }
+        function loadSnapshot(){
+            fetch('data/live-activity.json', { cache: 'no-store' })
+                .then(function(r){ if(!r.ok){ throw new Error(r.status); } return r.json(); })
+                .then(function(d){
+                    if(d && Array.isArray(d.languages) && d.languages.length){
+                        render(d.languages, d.languages_repos || (d.repos || []).length, 'actions');
+                    } else {
+                        loadLive();
+                    }
+                })
+                .catch(loadLive);
         }
         whenVisible(host, loadSnapshot);
     })();

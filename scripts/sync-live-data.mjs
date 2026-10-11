@@ -64,8 +64,28 @@ const snapshot = {
     }))
 };
 
+/* Language byte-share across the most active repos — feeds the site's own
+   "Top Languages" panel so no third-party widget image is needed. */
+const langTotals = {};
+let langRepos = 0;
+await Promise.all(mine.slice(0, 20).map(async r => {
+    try {
+        const langs = await gh('/repos/' + r.full_name + '/languages');
+        if (Object.keys(langs).length) langRepos++;
+        for (const [name, bytes] of Object.entries(langs)) {
+            langTotals[name] = (langTotals[name] || 0) + bytes;
+        }
+    } catch (e) {
+        console.warn('languages skipped for ' + r.full_name + ': ' + e.message);
+    }
+}));
+snapshot.languages = Object.entries(langTotals)
+    .map(([name, bytes]) => ({ name, bytes }))
+    .sort((a, b) => b.bytes - a.bytes);
+snapshot.languages_repos = langRepos;
+
 const out = join(root, 'data', 'live-activity.json');
 mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, JSON.stringify(snapshot, null, 2) + '\n');
 console.log('snapshot: ' + snapshot.repos.length + ' repos, ' + snapshot.events.length +
-    ' events, totals=' + JSON.stringify(totals) + ' -> data/live-activity.json');
+    ' events, ' + snapshot.languages.length + ' languages, totals=' + JSON.stringify(totals) + ' -> data/live-activity.json');
