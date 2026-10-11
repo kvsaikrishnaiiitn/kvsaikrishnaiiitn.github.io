@@ -1,13 +1,8 @@
 <div align="center">
-
-# <img src="https://github-readme-stats.vercel.app/api?username=kvsaikrishnaiiitn&show_icons=true&theme=github_dark&hide_border=true&include_all_commits=true" width="100%" alt="Venkata Saikrishna Kodapaka's GitHub stats" />
-
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0a0e14,40:1d4ed8,75:22d3ee,100:a78bfa&height=170&section=header&text=Venkata+Saikrishna+Kodapaka&fontSize=40&fontColor=ffffff&fontAlign=50&desc=Lead+Java+Developer+(Backend)+·+12+Years+·+Microservices+%26+Distributed+Systems&descSize=17&descAlign=50&animation=fadeIn&duration=2800" width="100%" alt="Venkata Saikrishna Kodapaka — Lead Java Developer" />
 </div>
 
-<p align="center">
-  <b>Venkata Saikrishna Kodapaka</b> — Lead Java Developer (Backend) · 12+ Years<br>
-  Microservices · Distributed Systems · Kafka · Spring Boot · Cloud-Native Engineering
-</p>
+# <img src="https://github-readme-stats.vercel.app/api?username=kvsaikrishnaiiitn&show_icons=true&theme=github_dark&hide_border=true&include_all_commits=true" width="100%" alt="Venkata Saikrishna Kodapaka's GitHub stats" />
 
 <p align="center">
   <a href="https://kvsaikrishnaiiitn.github.io"><img src="https://img.shields.io/badge/Portfolio-kvsaikrishnaiiitn.github.io-blue?style=for-the-badge&logo=githubpages" alt="Portfolio"></a>
@@ -44,12 +39,18 @@ Solution-oriented **Lead Java Developer** with more than **12 years** of applica
 | Senior Software Engineer — *IAM* | PruTech | Dec 2018 – Dec 2019 |
 | Lead Member Technical Staff — *Application Object Migrator* | Triniti | Jun 2014 – Nov 2018 |
 
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=wave&color=0:1d4ed8,50:22d3ee,100:a78bfa&height=60&animation=fadeIn&duration=2800" width="100%" alt="" />
+</p>
+
 ## 📫 Connect
 
 - ✉️ **kvsaikrishna.iiitn@gmail.com**
 - 📱 **+91 89850 65478**
 - 🌐 **[Portfolio →](https://kvsaikrishnaiiitn.github.io)**
 
----
-
 <p align="center"><i>B.Tech (CSE) — RGUKT, IIIT Nuzvid · Microsoft Azure Fundamentals (AZ-900)</i></p>
+
+<div align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:a78bfa,50:22d3ee,100:0a0e14&height=130&section=footer&text=Thanks+for+visiting!&fontSize=26&fontColor=ffffff&fontAlign=50&animation=fadeIn&duration=2800" width="100%" alt="Thanks for visiting" />
+</div>
