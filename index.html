@@ -112,6 +112,9 @@
         .term-line{white-space:pre-wrap;word-break:break-word}
         .term-caret{caret-color:#3fb950}
 
+        /* ===== Particle network canvas (hero) ===== */
+        #particle-net{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
         @media (prefers-reduced-motion:reduce){
             *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
         }
@@ -166,8 +169,10 @@
     <main class="max-w-6xl mx-auto px-5 md:px-6 flex-grow">
 
         <!-- ================= HERO ================= -->
-        <section id="home" class="grid lg:grid-cols-2 gap-12 items-center pt-12 md:pt-20 pb-16 scroll-mt-24">
-            <div class="space-y-7 reveal">
+        <section id="home" class="relative overflow-hidden grid lg:grid-cols-2 gap-12 items-center pt-12 md:pt-20 pb-16 scroll-mt-24">
+            <!-- Particle network canvas: absolute, z-index 0 — sits beneath profile text -->
+            <canvas id="particle-net" class="absolute inset-0 w-full h-full pointer-events-none" style="z-index:0" aria-hidden="true"></canvas>
+            <div class="relative z-10 space-y-7 reveal">
                 <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 bg-emerald-950/30 border border-emerald-800/50 rounded-full text-xs font-semibold text-emerald-400 tracking-wide">
                     <span class="badge-dot w-2 h-2 rounded-full bg-emerald-400"></span>
                     Culture Champion &amp; Multi-Hackathon Winner · 2026
@@ -202,7 +207,7 @@
             </div>
 
             <!-- Interactive IDE card -->
-            <div class="relative reveal reveal-d1">
+            <div class="relative z-10 reveal reveal-d1">
                 <div id="ide-card" class="card gradient-border overflow-hidden shadow-2xl shadow-black/50" style="transition:transform .25s ease-out">
                     <div class="flex items-center gap-2 px-4 py-3 border-b border-gray-800/70 bg-gray-900/60">
                         <span class="w-3 h-3 rounded-full bg-[#ff5f57]"></span>
@@ -1361,6 +1366,204 @@
                 e.preventDefault();
             }
         });
+    })();
+    </script>
+
+    <!-- ===== Particle Network Engine (hero) ===== -->
+    <script>
+    (function(){
+        'use strict';
+        var canvas = document.getElementById('particle-net');
+        if(!canvas) return;
+
+        /* Chromium-optimized: desynchronized reduces compositor latency on Edge/Chrome (Windows 11) */
+        var ctx = canvas.getContext('2d', { desynchronized: true });
+        var SECTION = canvas.parentElement;
+
+        var w = 0, h = 0, dpr = 1;
+        var particles = [];
+        var LINK_DIST = 130;   /* web-line reach between adjacent nodes */
+        var MOUSE_DIST = 170;  /* cursor interaction reach */
+        var mouse = { x: -9999, y: -9999 };
+        var rafId = null, running = false, inView = true, reduced = false;
+
+        /* Precomputed style buckets — zero string allocation inside the render loop */
+        var NODE_COLORS = ['rgba(96,165,250,0.85)', 'rgba(34,211,238,0.85)', 'rgba(167,139,250,0.85)'];
+        var LINE_STEPS = 24;
+        var LINE_STYLES = [];
+        var MOUSE_LINE_STYLES = [];
+        (function(){
+            for(var i = 0; i <= LINE_STEPS; i++){
+                LINE_STYLES.push('rgba(110,180,250,' + (i / LINE_STEPS * 0.30).toFixed(3) + ')');
+                MOUSE_LINE_STYLES.push('rgba(148,222,255,' + (i / LINE_STEPS * 0.45).toFixed(3) + ')');
+            }
+        })();
+
+        function seed(){
+            /* density-based node count, clamped for a light, lag-free matrix */
+            var count = Math.max(28, Math.min(85, Math.round(w * h / 15000)));
+            /* jittered matrix layout: nodes start grid-mapped, then slowly drift */
+            var cols = Math.max(3, Math.round(Math.sqrt(count * (w / Math.max(h, 1)))));
+            var rows = Math.ceil(count / cols);
+            particles = [];
+            for(var r = 0; r < rows; r++){
+                for(var c = 0; c < cols; c++){
+                    if(particles.length >= count) break;
+                    var gx = (c + 0.5) / cols * w;
+                    var gy = (r + 0.5) / rows * h;
+                    particles.push({
+                        x: gx + (Math.random() - 0.5) * (w / cols) * 0.7,
+                        y: gy + (Math.random() - 0.5) * (h / rows) * 0.7,
+                        vx: (Math.random() - 0.5) * 0.34,
+                        vy: (Math.random() - 0.5) * 0.34,
+                        r: 1.1 + Math.random() * 1.5,
+                        ci: (r * cols + c) % 3
+                    });
+                }
+            }
+        }
+
+        function resize(){
+            w = SECTION.clientWidth;
+            h = SECTION.clientHeight;
+            /* cap DPR at 2 — uncapped 4K canvas rendering is the #1 source of lag */
+            dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = Math.round(w * dpr);
+            canvas.height = Math.round(h * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            seed();
+            if(reduced) drawFrame();
+        }
+
+        function drawFrame(){
+            ctx.clearRect(0, 0, w, h);
+            var i, j, p, q, dx, dy, d2, bucket;
+            var link2 = LINK_DIST * LINK_DIST;
+            var mouse2 = MOUSE_DIST * MOUSE_DIST;
+
+            /* thin web lines — bounding-box bailout before any sqrt work */
+            ctx.lineWidth = 1;
+            for(i = 0; i < particles.length; i++){
+                p = particles[i];
+                for(j = i + 1; j < particles.length; j++){
+                    q = particles[j];
+                    dx = p.x - q.x;
+                    if(dx > LINK_DIST || dx < -LINK_DIST) continue;
+                    dy = p.y - q.y;
+                    if(dy > LINK_DIST || dy < -LINK_DIST) continue;
+                    d2 = dx * dx + dy * dy;
+                    if(d2 < link2){
+                        bucket = Math.round((1 - Math.sqrt(d2) / LINK_DIST) * LINE_STEPS);
+                        ctx.strokeStyle = LINE_STYLES[bucket];
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(q.x, q.y);
+                        ctx.stroke();
+                    }
+                }
+                /* cursor-linked lines */
+                dx = p.x - mouse.x;
+                if(dx > MOUSE_DIST || dx < -MOUSE_DIST) continue;
+                dy = p.y - mouse.y;
+                if(dy > MOUSE_DIST || dy < -MOUSE_DIST) continue;
+                d2 = dx * dx + dy * dy;
+                if(d2 < mouse2){
+                    bucket = Math.round((1 - Math.sqrt(d2) / MOUSE_DIST) * LINE_STEPS);
+                    ctx.strokeStyle = MOUSE_LINE_STYLES[bucket];
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(mouse.x, mouse.y);
+                    ctx.stroke();
+                }
+            }
+
+            /* floating nodes */
+            for(i = 0; i < particles.length; i++){
+                p = particles[i];
+                ctx.fillStyle = NODE_COLORS[p.ci];
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, 6.2832);
+                ctx.fill();
+            }
+        }
+
+        function step(){
+            var i, p, dx, dy, d2, speed;
+            var mouse2 = MOUSE_DIST * MOUSE_DIST;
+            for(i = 0; i < particles.length; i++){
+                p = particles[i];
+                /* gentle cursor repulsion */
+                dx = p.x - mouse.x;
+                dy = p.y - mouse.y;
+                d2 = dx * dx + dy * dy;
+                if(d2 < mouse2 && d2 > 0.01){
+                    var f = 0.018 * (1 - d2 / mouse2);
+                    p.vx += dx * f;
+                    p.vy += dy * f;
+                }
+                /* slow drift */
+                p.x += p.vx;
+                p.y += p.vy;
+                /* soft speed clamp keeps the matrix calm */
+                speed = p.vx * p.vx + p.vy * p.vy;
+                if(speed > 0.36){
+                    speed = 0.6 / Math.sqrt(speed);
+                    p.vx *= speed;
+                    p.vy *= speed;
+                }
+                /* wrap edges seamlessly */
+                if(p.x < -10) p.x = w + 10; else if(p.x > w + 10) p.x = -10;
+                if(p.y < -10) p.y = h + 10; else if(p.y > h + 10) p.y = -10;
+            }
+            drawFrame();
+            rafId = requestAnimationFrame(step);
+        }
+
+        function start(){
+            if(running || reduced) return;
+            running = true;
+            rafId = requestAnimationFrame(step);
+        }
+        function stop(){
+            running = false;
+            if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
+        }
+
+        /* cursor tracking, relative to the canvas */
+        SECTION.addEventListener('mousemove', function(e){
+            var rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+        SECTION.addEventListener('mouseleave', function(){
+            mouse.x = -9999;
+            mouse.y = -9999;
+        });
+
+        /* battery/perf savers: pause when the tab is hidden or the hero is scrolled out of view */
+        document.addEventListener('visibilitychange', function(){
+            if(document.hidden) stop();
+            else if(inView) start();
+        });
+        if('IntersectionObserver' in window){
+            var io = new IntersectionObserver(function(entries){
+                entries.forEach(function(en){
+                    inView = en.isIntersecting;
+                    if(inView && !document.hidden) start(); else stop();
+                });
+            }, {threshold: 0.05});
+            io.observe(SECTION);
+        }
+
+        var resizeTimer = null;
+        window.addEventListener('resize', function(){
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(resize, 150);
+        });
+
+        reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        resize();
+        if(!reduced) start();
     })();
     </script>
 </body>
