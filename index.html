@@ -71,10 +71,13 @@
         .animate-marquee{animation:marquee 30s linear infinite;will-change:transform}
         .marquee-mask{mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
 
-        /* Scroll reveal */
-        .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
-        .reveal.in-view{opacity:1;transform:none}
-        .reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}
+        /* Scroll reveal — CSS keyframe fade-in-up, triggered by IntersectionObserver */
+        @keyframes fade-in-up{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .reveal{opacity:0}
+        .reveal.in-view{opacity:1;animation:fade-in-up .75s cubic-bezier(.2,.8,.2,1) backwards}
+        .reveal-d1.in-view{animation-delay:.1s}
+        .reveal-d2.in-view{animation-delay:.2s}
+        .reveal-d3.in-view{animation-delay:.3s}
 
         /* Nav */
         .nav-link{position:relative;transition:color .25s}
@@ -900,25 +903,31 @@
         document.querySelectorAll('.reveal').forEach(function(el){ revealObs.observe(el); });
         });
 
-        /* ---------- Counters ---------- */
-        function animateCount(el){
-            var target = parseInt(el.getAttribute('data-count'), 10) || 0;
-            var dur = 1700, start = null;
-            function tick(t){
-                if(!start) start = t;
-                var p = Math.min((t - start) / dur, 1);
-                var eased = 1 - Math.pow(1 - p, 4);
-                el.textContent = Math.round(target * eased);
-                if(p < 1) requestAnimationFrame(tick);
-            }
-            requestAnimationFrame(tick);
+        /* ---------- High-performance counters: shared rAF ticker, rapid easeOutExpo ---------- */
+        var activeCounters = new Set();
+        var countRafId = null;
+        var COUNT_DURATION = 1000; /* rapid count-up window (ms) */
+        function easeOutExpo(p){ return p >= 1 ? 1 : 1 - Math.pow(2, -10 * p); }
+        function countTick(now){
+            activeCounters.forEach(function(c){
+                var p = Math.min((now - c.start) / COUNT_DURATION, 1);
+                c.el.textContent = Math.round(c.target * easeOutExpo(p));
+                if(p >= 1){ activeCounters.delete(c); }
+            });
+            if(activeCounters.size){ countRafId = requestAnimationFrame(countTick); }
+            else { countRafId = null; }
+        }
+        function startCount(el){
+            activeCounters.add({el: el, target: parseInt(el.getAttribute('data-count'), 10) || 0, start: performance.now()});
+            if(!countRafId){ countRafId = requestAnimationFrame(countTick); }
         }
         safe(function(){
         var countObs = new IntersectionObserver(function(entries){
             entries.forEach(function(en){
-                if(en.isIntersecting){ animateCount(en.target); countObs.unobserve(en.target); }
+                /* fires once the metric is scrolled into/past the upper viewport band */
+                if(en.isIntersecting){ startCount(en.target); countObs.unobserve(en.target); }
             });
-        }, {threshold:0.5});
+        }, {threshold:0.4, rootMargin:'0px 0px -25% 0px'});
         document.querySelectorAll('.counter').forEach(function(el){ countObs.observe(el); });
         });
 
