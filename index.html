@@ -3,12 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Venkata Saikrishna Kodapaka — Lead Java Developer | 12+ Years</title>
+    <title>Venkata Saikrishna Kodapaka — Lead Java Developer | Portfolio</title>
     <meta name="description" content="Portfolio of Venkata Saikrishna Kodapaka — Lead Java Developer with 12+ years building microservices, distributed systems and high-throughput backends for Investment Banking, Product & E-commerce.">
+    <meta name="author" content="Venkata Saikrishna Kodapaka">
+    <link rel="canonical" href="https://kvsaikrishnaiiitn.github.io/">
     <meta property="og:title" content="Venkata Saikrishna Kodapaka — Lead Java Developer">
     <meta property="og:description" content="12+ years · Microservices · Kafka · Spring Boot · Cloud · Hackathon Winner 2026">
     <meta property="og:type" content="website">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230d1117'/%3E%3Ctext x='50' y='68' font-size='52' font-family='monospace' font-weight='bold' fill='%2360a5fa' text-anchor='middle'%3EVK%3C/text%3E%3C/svg%3E">
+    <meta property="og:url" content="https://kvsaikrishnaiiitn.github.io/">
+    <meta property="og:image" content="https://github.com/kvsaikrishnaiiitn.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Venkata Saikrishna Kodapaka — Lead Java Developer">
+    <meta name="twitter:description" content="12+ years · Microservices · Kafka · Spring Boot · Cloud · Hackathon Winner 2026">
+    <meta name="twitter:image" content="https://github.com/kvsaikrishnaiiitn.png">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="mask-icon" href="favicon.svg" color="#3b82f6">
+    <meta name="theme-color" content="#0a0e14">
     <!-- Tailwind CSS (Play CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome -->
@@ -18,8 +29,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://github-readme-stats.vercel.app">
-    <link rel="preconnect" href="https://github-readme-streak-stats.herokuapp.com">
-    <link rel="preconnect" href="https://github-readme-activity-graph.vercel.app">
+    <link rel="preconnect" href="https://streak-stats.demolab.com">
+    <link rel="preconnect" href="https://github-contributions-api.jogruber.de">
+    <link rel="preconnect" href="https://api.github.com">
     <style>
         :root{
             --bg:#0a0e14; --line:rgba(148,163,184,.14);
@@ -52,6 +64,9 @@
             border:1px solid var(--line);border-radius:1rem;
             transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s,box-shadow .35s;
         }
+        /* grid/flex children must be allowed to shrink below their intrinsic content
+           width (wide SVG widgets, the tech marquee) or they blow out the page on mobile */
+        .grid>*{min-width:0}
         .card:hover{transform:translateY(-5px);border-color:rgba(96,165,250,.45);box-shadow:0 20px 44px -20px rgba(59,130,246,.38)}
         .tech-card{transition:all .3s cubic-bezier(0.4,0,0.2,1)}
         .tech-card:hover{transform:translateY(-4px);border-color:#3b82f6;box-shadow:0 10px 25px -5px rgba(59,130,246,.25)}
@@ -141,35 +156,37 @@
     <header class="sticky top-0 z-50 border-b border-gray-800/70 bg-[#0a0e14]/75 backdrop-blur-xl">
         <div class="max-w-6xl mx-auto px-5 md:px-6 h-16 flex items-center justify-between">
             <a href="#home" class="mono text-blue-400 font-bold text-base tracking-tight">&lt;kvsaikrishnaiiitn /&gt;</a>
-            <nav class="hidden md:flex items-center gap-6 text-sm mono">
+            <nav class="hidden lg:flex items-center gap-6 text-sm mono">
                 <a href="#about" class="nav-link hover:text-blue-400 transition">.about()</a>
                 <a href="#impact" class="nav-link hover:text-blue-400 transition">.metrics()</a>
                 <a href="#skills" class="nav-link hover:text-blue-400 transition">.skills()</a>
                 <a href="#experience" class="nav-link hover:text-blue-400 transition">.experience()</a>
                 <a href="#awards" class="nav-link hover:text-blue-400 transition">.awards()</a>
+                <a href="#github" class="nav-link hidden lg:inline hover:text-blue-400 transition">.github()</a>
                 <a href="#contact" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-sans font-medium transition shadow-lg shadow-blue-900/30">Let's Talk</a>
             </nav>
-            <button id="menu-btn" class="md:hidden text-gray-300 hover:text-white p-2" aria-label="Toggle menu">
+            <button id="menu-btn" class="lg:hidden text-gray-300 hover:text-white p-2" aria-label="Toggle menu">
                 <i class="fa-solid fa-bars text-xl"></i>
             </button>
         </div>
         <!-- Mobile menu -->
-        <div id="mobile-menu" class="md:hidden hidden border-t border-gray-800/70 bg-[#0a0e14]/95 backdrop-blur-xl">
+        <div id="mobile-menu" class="lg:hidden hidden border-t border-gray-800/70 bg-[#0a0e14]/95 backdrop-blur-xl">
             <nav class="px-6 py-4 flex flex-col gap-1 text-sm mono">
                 <a href="#about" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition">.about()</a>
                 <a href="#impact" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition">.metrics()</a>
                 <a href="#skills" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition">.skills()</a>
                 <a href="#experience" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition">.experience()</a>
                 <a href="#awards" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition">.awards()</a>
+                <a href="#github" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition">.github()</a>
                 <a href="#contact" class="mob-link py-2.5 px-3 rounded-lg bg-blue-600 text-white text-center font-sans font-medium">Let's Talk</a>
             </nav>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-5 md:px-6 flex-grow">
+    <main class="w-full max-w-6xl mx-auto px-5 md:px-6 flex-grow">
 
         <!-- ================= HERO ================= -->
-        <section id="home" class="relative overflow-hidden grid lg:grid-cols-2 gap-12 items-center pt-12 md:pt-20 pb-16 scroll-mt-24">
+        <section id="home" class="relative grid lg:grid-cols-2 gap-12 items-center pt-12 md:pt-20 pb-16 scroll-mt-24">
             <!-- Particle network canvas: absolute, z-index 0 — sits beneath profile text -->
             <canvas id="particle-net" class="absolute inset-0 w-full h-full pointer-events-none" style="z-index:0" aria-hidden="true"></canvas>
             <div class="relative z-10 space-y-7 reveal">
@@ -217,21 +234,21 @@
                         <span class="ml-auto mono text-[10px] text-gray-600 hidden sm:inline">utf-8 · Java 21</span>
                     </div>
                     <div id="term-body" class="mono text-[11px] sm:text-[13px] px-3.5 sm:px-5 py-4 min-h-[248px] text-gray-300 overflow-x-hidden"></div>
-                    <div class="px-3.5 sm:px-5 py-3 border-t border-gray-800/70 bg-gray-900/40 mono text-xs">
+                    <div class="px-3.5 sm:px-5 pt-3 pb-9 border-t border-gray-800/70 bg-gray-900/40 mono text-xs">
                         <span class="text-gray-500">$ </span><span class="text-cyan-300">./deploy --to github-pages</span>
                         <span class="block mt-1.5 text-emerald-400"><i class="fa-solid fa-circle-check mr-1.5"></i>Live at kvsaikrishnaiiitn.github.io</span>
                     </div>
                 </div>
-                <!-- Floating chips -->
-                <div class="absolute -top-5 -right-2 sm:-right-4 z-20 px-4 py-2.5 rounded-xl bg-gray-900/95 border border-gray-700 shadow-2xl shadow-black/50 backdrop-blur flex items-center gap-2 animate-floaty transition-colors hover:border-sky-500/50">
+                <!-- Floating chips (kept inside the 20–24px page gutter so they never clip) -->
+                <div class="absolute -top-8 -right-2 sm:-right-4 lg:-right-5 z-30 px-4 py-2.5 rounded-xl bg-[#0d1117] border border-gray-600 shadow-2xl shadow-black/60 backdrop-blur flex items-center gap-2 whitespace-nowrap animate-floaty transition-colors hover:border-sky-400/60">
                     <span class="text-xl">🏆</span>
                     <span class="text-xs font-bold text-white">Hackathon Winner</span>
                 </div>
-                <div class="absolute -bottom-5 -left-2 sm:-left-4 z-20 px-4 py-2.5 rounded-xl bg-gray-900/95 border border-gray-700 shadow-2xl shadow-black/50 backdrop-blur flex items-center gap-2 animate-floaty-d1 transition-colors hover:border-amber-500/50">
+                <div class="absolute -bottom-4 -left-2 sm:-left-4 lg:-left-5 z-30 px-4 py-2.5 rounded-xl bg-[#0d1117] border border-gray-600 shadow-2xl shadow-black/60 backdrop-blur flex items-center gap-2 whitespace-nowrap animate-floaty-d1 transition-colors hover:border-amber-400/60">
                     <i class="fa-solid fa-bolt text-amber-400"></i>
                     <span class="text-xs font-bold text-white">12+ Years Exp</span>
                 </div>
-                <div class="absolute top-1/2 -right-3 sm:-right-6 z-20 px-3.5 py-2 rounded-xl bg-gray-900/95 border border-gray-700 shadow-2xl shadow-black/50 backdrop-blur animate-floaty-d2 transition-colors hover:border-sky-500/50 hidden sm:flex items-center gap-2" style="margin-top:-1rem">
+                <div class="absolute top-1/2 -right-2 sm:-right-4 lg:-right-5 z-30 px-3.5 py-2 rounded-xl bg-[#0d1117] border border-gray-600 shadow-2xl shadow-black/60 backdrop-blur animate-floaty-d2 transition-colors hover:border-sky-400/60 hidden sm:flex items-center gap-2 whitespace-nowrap" style="margin-top:-0.875rem">
                     <i class="fa-solid fa-cloud text-sky-400 text-sm"></i>
                     <span class="text-[11px] font-bold text-white mono">AZ-900</span>
                 </div>
@@ -695,7 +712,7 @@
         <section id="github" class="py-20 scroll-mt-24">
             <div class="space-y-2 mb-10 reveal">
                 <h2 class="text-3xl font-bold text-white flex items-center gap-3"><span class="text-blue-500 mono">#</span> GitHub Dev Insights</h2>
-                <p class="text-sm text-gray-500">Live contribution data, refreshed automatically from my GitHub activity.</p>
+                <p class="text-sm text-gray-500">Live contribution graph, stats and activity — refreshed straight from my GitHub account.</p>
             </div>
 
             <!-- Profile identity card -->
@@ -734,7 +751,7 @@
             <div class="grid md:grid-cols-2 gap-6">
                 <div class="card p-5 md:col-span-2 reveal group">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-bold text-white text-sm mono flex items-center gap-2"><i class="fa-solid fa-chart-column text-blue-400"></i>contributions &amp; stats</h3>
+                        <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-chart-column text-blue-400"></i>Contributions &amp; Stats</h3>
                         <span class="flex items-center gap-2 text-[10px] mono font-bold text-emerald-400 tracking-wider">
                             <span class="relative flex h-2 w-2">
                                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-70"></span>
@@ -743,34 +760,54 @@
                         </span>
                     </div>
                     <div class="bg-[#0d1117] border border-gray-800/70 rounded-xl p-3 sm:p-4 transition group-hover:border-blue-500/40 group-hover:shadow-lg group-hover:shadow-blue-900/20">
-                        <img src="https://github-readme-stats.vercel.app/api?username=kvsaikrishnaiiitn&show_icons=true&theme=github_dark&hide_border=true&include_all_commits=true&count_private=false" alt="GitHub stats" class="w-full rounded-lg" loading="lazy">
+                        <img src="https://github-readme-stats.vercel.app/api?username=kvsaikrishnaiiitn&show_icons=true&theme=github_dark&hide_border=true&include_all_commits=true&count_private=false&hide_rank=true" alt="GitHub stats" class="w-full max-w-[640px] mx-auto rounded-lg" loading="lazy">
                     </div>
                 </div>
                 <div class="card p-5 reveal group">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-bold text-white text-sm mono flex items-center gap-2"><i class="fa-solid fa-language text-purple-400"></i>top languages</h3>
+                        <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-language text-purple-400"></i>Top Languages</h3>
                         <a href="https://github.com/kvsaikrishnaiiitn?tab=repositories" target="_blank" rel="noopener" class="text-[10px] mono text-gray-500 hover:text-blue-400 transition"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>open</a>
                     </div>
                     <div class="bg-[#0d1117] border border-gray-800/70 rounded-xl p-3 sm:p-4 transition group-hover:border-purple-500/40 group-hover:shadow-lg group-hover:shadow-purple-900/20">
-                        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=kvsaikrishnaiiitn&theme=github_dark&hide_border=true&layout=compact" alt="Top languages" class="w-full rounded-lg" loading="lazy">
+                        <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=kvsaikrishnaiiitn&theme=github_dark&hide_border=true&layout=compact" alt="Top languages" class="w-full max-w-[420px] mx-auto rounded-lg" loading="lazy">
                     </div>
                 </div>
                 <div class="card p-5 reveal reveal-d1 group">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-bold text-white text-sm mono flex items-center gap-2"><i class="fa-solid fa-fire text-amber-400"></i>streak</h3>
+                        <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-fire text-amber-400"></i>Streak</h3>
                         <a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="text-[10px] mono text-gray-500 hover:text-blue-400 transition"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>open</a>
                     </div>
                     <div class="bg-[#0d1117] border border-gray-800/70 rounded-xl p-3 sm:p-4 transition group-hover:border-amber-500/40 group-hover:shadow-lg group-hover:shadow-amber-900/20">
-                        <img src="https://github-readme-streak-stats.herokuapp.com/?user=kvsaikrishnaiiitn&theme=dark&hide_border=true" alt="GitHub streak" class="w-full rounded-lg" loading="lazy">
+                        <img src="https://streak-stats.demolab.com/?user=kvsaikrishnaiiitn&theme=dark&hide_border=true" alt="GitHub streak" class="w-full max-w-[520px] mx-auto rounded-lg" loading="lazy">
                     </div>
                 </div>
-                <div class="card p-5 md:col-span-2 reveal group">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-bold text-white text-sm mono flex items-center gap-2"><i class="fa-solid fa-wave-square text-cyan-400"></i>activity</h3>
-                        <a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="text-[10px] mono text-gray-500 hover:text-blue-400 transition"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>open</a>
+
+                <!-- Contribution activity graph — rendered in-page (no third-party image) -->
+                <div class="card p-5 md:col-span-2 min-w-0 reveal group">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-chart-area text-cyan-400"></i>Activity Graph</h3>
+                        <span id="contrib-total" class="text-[10px] mono font-bold text-emerald-400 tracking-wider">loading…</span>
                     </div>
                     <div class="bg-[#0d1117] border border-gray-800/70 rounded-xl p-3 sm:p-4 transition group-hover:border-cyan-500/40 group-hover:shadow-lg group-hover:shadow-cyan-900/20">
-                        <img src="https://github-readme-activity-graph.vercel.app/graph?username=kvsaikrishnaiiitn&theme=github_dark&hide_border=true&area=true" alt="Activity graph" class="w-full rounded-lg" loading="lazy">
+                        <div id="contrib-graph" class="min-h-[150px]">
+                            <div class="flex items-center justify-center gap-2 py-8 text-xs mono text-gray-500">
+                                <i class="fa-solid fa-spinner fa-spin text-cyan-400"></i> rendering contribution graph…
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-5 md:col-span-2 reveal group">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-wave-square text-cyan-400"></i>Recent Activity</h3>
+                        <a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="text-[10px] mono text-gray-500 hover:text-blue-400 transition"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>open</a>
+                    </div>
+                    <div class="bg-[#0d1117] border border-gray-800/70 rounded-xl p-3 sm:p-4 transition group-hover:border-emerald-500/40 group-hover:shadow-lg group-hover:shadow-emerald-900/20">
+                        <div id="gh-activity" class="min-h-[132px]">
+                            <div class="flex items-center justify-center gap-2 py-8 text-xs mono text-gray-500">
+                                <i class="fa-solid fa-spinner fa-spin text-cyan-400"></i> loading live activity from GitHub…
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1067,7 +1104,7 @@
 
         /* ---------- Terminal typing ---------- */
         var termLines = [
-            {t:'package com.vsaikrishna;', h:'<span class="text-sky-300">package</span> <span class="text-gray-300">com.vsaikrishna;</span>'},
+            {t:'package com.kvsaikrishnaiiitn;', h:'<span class="text-sky-300">package</span> <span class="text-gray-300">com.kvsaikrishnaiiitn;</span>'},
             {t:'', h:''},
             {t:'import org.springframework.stereotype.Component;', h:'<span class="text-purple-400">import</span> <span class="text-gray-300">org.springframework.stereotype.</span><span class="text-amber-300">Component</span><span class="text-gray-300">;</span>'},
             {t:'', h:''},
@@ -1116,7 +1153,7 @@
                 var r = ideCard.getBoundingClientRect();
                 var x = (e.clientX - r.left) / r.width - 0.5;
                 var y = (e.clientY - r.top) / r.height - 0.5;
-                ideCard.style.transform = 'perspective(950px) rotateY(' + (x * 7) + 'deg) rotateX(' + (-y * 7) + 'deg) translateY(-4px)';
+                ideCard.style.transform = 'perspective(950px) rotateY(' + (x * 5) + 'deg) rotateX(' + (-y * 5) + 'deg) translateY(-4px)';
             });
             ideCard.addEventListener('mouseleave', function(){ ideCard.style.transform = ''; });
         }
@@ -1628,6 +1665,201 @@
         reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         resize();
         if(!reduced) start();
+    })();
+    </script>
+
+    <!-- ===== Contribution Activity Graph (self-rendered SVG, last 12 months) ===== -->
+    <script>
+    (function(){
+        'use strict';
+        var host = document.getElementById('contrib-graph');
+        var totalEl = document.getElementById('contrib-total');
+        if(!host) return;
+
+        /* On-brand palette: zero activity → deep blue → sky → cyan */
+        var LEVEL_FILL = ['#151b26', '#1b3b66', '#2563eb', '#38bdf8', '#67e8f9'];
+        var CELL = 11, GAP = 3, STEP = CELL + GAP, PAD_L = 30, PAD_T = 18, PAD_B = 8;
+        var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+        function esc(s){
+            return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+        function niceDate(iso){
+            var d = new Date(iso + 'T00:00:00Z');
+            return MONTHS[d.getUTCMonth()] + ' ' + d.getUTCDate() + ', ' + d.getUTCFullYear();
+        }
+
+        function render(days){
+            if(!Array.isArray(days) || !days.length){ fail(); return; }
+
+            /* pad the first week so columns line up with weekday rows */
+            var cells = [];
+            var startPad = new Date(days[0].date + 'T00:00:00Z').getUTCDay();
+            for(var p = 0; p < startPad; p++){ cells.push(null); }
+            days.forEach(function(d){ cells.push(d); });
+            while(cells.length % 7 !== 0){ cells.push(null); }
+            var weeks = cells.length / 7;
+
+            var total = days.reduce(function(sum, d){ return sum + (d.count || 0); }, 0);
+            var width = PAD_L + weeks * STEP + 4;
+            var height = PAD_T + 7 * STEP + PAD_B;
+
+            var svg = '<svg viewBox="0 0 ' + width + ' ' + height + '" ' +
+                      'style="display:block;width:100%;height:auto;min-width:' + Math.min(width, 660) + 'px" ' +
+                      'role="img" aria-label="GitHub contribution activity for the last 12 months: ' + total + ' contributions">';
+
+            /* month labels */
+            var lastMonth = -1;
+            for(var w = 0; w < weeks; w++){
+                var head = cells[w * 7];
+                if(!head){ for(var r2 = 1; r2 < 7; r2++){ if(cells[w * 7 + r2]){ head = cells[w * 7 + r2]; break; } } }
+                if(!head) continue;
+                var m = new Date(head.date + 'T00:00:00Z').getUTCMonth();
+                if(m !== lastMonth){
+                    lastMonth = m;
+                    svg += '<text x="' + (PAD_L + w * STEP) + '" y="11" class="cg-month" fill="#4b5563" font-size="9" font-family="JetBrains Mono, monospace">' + MONTHS[m] + '</text>';
+                }
+            }
+            /* weekday labels (Mon / Wed / Fri) */
+            [1, 3, 5].forEach(function(r){
+                svg += '<text x="' + (PAD_L - 8) + '" y="' + (PAD_T + r * STEP + CELL - 2.5) + '" text-anchor="end" fill="#4b5563" font-size="9" font-family="JetBrains Mono, monospace">' + DAYS[r] + '</text>';
+            });
+            /* cells */
+            for(var i = 0; i < cells.length; i++){
+                var cw = Math.floor(i / 7), cr = i % 7;
+                var d2 = cells[i];
+                var fill = d2 ? (LEVEL_FILL[d2.level] || LEVEL_FILL[0]) : LEVEL_FILL[0];
+                var tip = d2 ? (d2.count === 0 ? 'No contributions on ' : d2.count + ' contribution' + (d2.count === 1 ? '' : 's') + ' on ') + niceDate(d2.date) : '';
+                svg += '<rect x="' + (PAD_L + cw * STEP) + '" y="' + (PAD_T + cr * STEP) + '" width="' + CELL + '" height="' + CELL + '" rx="2.5" fill="' + fill + '">' +
+                       (tip ? '<title>' + esc(tip) + '</title>' : '') + '</rect>';
+            }
+            svg += '</svg>';
+
+            var legend = '<div class="flex flex-wrap items-center justify-between gap-3 mt-3 px-1">' +
+                '<div class="flex items-center gap-1.5 text-[10px] mono text-gray-500">' +
+                    '<span class="mr-1">Less</span>' +
+                    LEVEL_FILL.map(function(c){ return '<span class="inline-block w-2.5 h-2.5 rounded-[3px]" style="background:' + c + '"></span>'; }).join('') +
+                    '<span class="ml-1">More</span>' +
+                '</div>' +
+                '<a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="text-[10px] mono text-gray-500 hover:text-blue-400 transition">view on GitHub <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>' +
+            '</div>';
+
+            host.innerHTML = '<div class="overflow-x-auto pb-1">' + svg + '</div>' + legend;
+            if(totalEl){
+                totalEl.innerHTML = '<span class="text-emerald-400">' + total + '</span>' +
+                    '<span class="text-gray-600 mx-1.5">·</span><span class="text-gray-500">last 12 months</span>';
+            }
+        }
+
+        function fail(){
+            host.innerHTML =
+                '<div class="text-center py-8">' +
+                    '<i class="fa-solid fa-chart-area text-2xl text-gray-600 mb-3"></i>' +
+                    '<p class="text-xs text-gray-400 mb-3">Contribution graph is temporarily unavailable.</p>' +
+                    '<a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="text-xs mono text-blue-400 hover:text-cyan-300 transition">view contributions on GitHub <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>' +
+                '</div>';
+            if(totalEl){ totalEl.innerHTML = '<span class="text-gray-500">last 12 months</span>'; }
+        }
+
+        fetch('https://github-contributions-api.jogruber.de/v4/kvsaikrishnaiiitn?y=last', { headers: { 'Accept': 'application/json' } })
+            .then(function(r){ if(!r.ok){ throw new Error('contrib API ' + r.status); } return r.json(); })
+            .then(function(data){ render(data.contributions); })
+            .catch(fail);
+    })();
+    </script>
+
+    <!-- ===== Live GitHub Activity Feed (GitHub Events API) ===== -->
+    <script>
+    (function(){
+        'use strict';
+        var box = document.getElementById('gh-activity');
+        if(!box) return;
+
+        var ICONS = {
+            PushEvent: 'fa-code-commit', CreateEvent: 'fa-plus', WatchEvent: 'fa-star',
+            ForkEvent: 'fa-code-fork', IssuesEvent: 'fa-circle-exclamation', IssueCommentEvent: 'fa-comment',
+            PullRequestEvent: 'fa-code-pull-request', PullRequestReviewEvent: 'fa-eye',
+            ReleaseEvent: 'fa-rocket', PublicEvent: 'fa-globe', DeleteEvent: 'fa-trash', MemberEvent: 'fa-user'
+        };
+
+        function esc(s){
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+        function timeAgo(iso){
+            var t = (Date.now() - new Date(iso).getTime()) / 1000;
+            if(t < 90) return 'just now';
+            if(t < 3600) return Math.floor(t / 60) + 'm ago';
+            if(t < 86400) return Math.floor(t / 3600) + 'h ago';
+            return Math.floor(t / 86400) + 'd ago';
+        }
+        function describe(e){
+            var p = e.payload || {};
+            switch(e.type){
+                case 'PushEvent': {
+                    var n = p.distinct_size || p.size || 1;
+                    var ref = (p.ref || 'refs/heads/main').replace('refs/heads/', '').replace('refs/tags/', '');
+                    return 'pushed ' + n + ' commit' + (n === 1 ? '' : 's') + ' to <span class="text-sky-400 font-semibold">' + esc(ref) + '</span> in';
+                }
+                case 'CreateEvent':
+                    return 'created ' + esc(p.ref_type || 'repository') + (p.ref ? ' <span class="text-sky-400 font-semibold">' + esc(p.ref) + '</span>' : '') + ' in';
+                case 'WatchEvent': return 'starred';
+                case 'ForkEvent': return 'forked';
+                case 'IssuesEvent': return (p.action || 'updated') + ' an issue in';
+                case 'IssueCommentEvent': return 'commented on an issue in';
+                case 'PullRequestEvent': return (p.action || 'updated') + ' a pull request in';
+                case 'PullRequestReviewEvent': return 'reviewed a pull request in';
+                case 'ReleaseEvent': return 'published a release in';
+                case 'PublicEvent': return 'open-sourced';
+                case 'DeleteEvent': return 'deleted ' + esc(p.ref_type || 'branch') + ' in';
+                case 'MemberEvent': return 'added a collaborator in';
+                default: return 'activity in';
+            }
+        }
+
+        function render(events){
+            if(!Array.isArray(events) || !events.length){
+                box.innerHTML =
+                    '<div class="text-center py-8">' +
+                        '<i class="fa-solid fa-satellite-dish text-2xl text-gray-600 mb-3"></i>' +
+                        '<p class="text-xs text-gray-400">No public activity in the last 90 days — yet.</p>' +
+                    '</div>';
+                return;
+            }
+            var html = '<ul class="divide-y divide-gray-800/60">';
+            events.slice(0, 6).forEach(function(e){
+                var icon = ICONS[e.type] || 'fa-circle-dot';
+                html += '<li class="flex items-center gap-3 py-2.5">' +
+                    '<span class="w-8 h-8 shrink-0 rounded-lg bg-cyan-950/40 border border-cyan-800/30 flex items-center justify-center text-cyan-400 text-xs"><i class="fa-solid ' + icon + '"></i></span>' +
+                    '<div class="min-w-0 flex-grow">' +
+                        '<p class="text-xs text-gray-300 truncate">' + describe(e) + ' <span class="text-sky-400 font-semibold">' + esc(e.repo.name) + '</span></p>' +
+                        '<p class="text-[10px] mono text-gray-500 mt-0.5">' + esc(e.type.replace('Event', '')) + ' · ' + timeAgo(e.created_at) + '</p>' +
+                    '</div>' +
+                    '<a href="' + esc(e.repo.url) + '" target="_blank" rel="noopener" class="shrink-0 text-gray-600 hover:text-blue-400 transition text-xs" title="Open repo"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>' +
+                '</li>';
+            });
+            html += '</ul>';
+            box.innerHTML = html;
+        }
+
+        function fallback(){
+            box.innerHTML =
+                '<div class="text-center py-8">' +
+                    '<i class="fa-solid fa-triangle-exclamation text-2xl text-amber-400 mb-3"></i>' +
+                    '<p class="text-xs text-gray-400 mb-3">Live activity feed unavailable (GitHub API limit).</p>' +
+                    '<a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="text-xs mono text-blue-400 hover:text-cyan-300 transition">view profile on GitHub <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>' +
+                '</div>';
+        }
+
+        fetch('https://api.github.com/users/kvsaikrishnaiiitn/events/public', {
+            headers: { 'Accept': 'application/vnd.github+json' }
+        })
+        .then(function(r){
+            if(!r.ok) throw new Error('GitHub API ' + r.status);
+            return r.json();
+        })
+        .then(render)
+        .catch(fallback);
     })();
     </script>
 </body>
