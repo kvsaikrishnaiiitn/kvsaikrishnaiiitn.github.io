@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saikrishna Kodapaka | Lead Java Developer Portfolio</title>
+    <!-- Tailwind CSS for modern layout -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for technical icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Clean, developer-centric typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Space Grotesk', sans-serif; background-color: #0d1117; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .tech-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .tech-card:hover { transform: translateY(-4px); border-color: #3b82f6; box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.2); }
+    </style>
+</head>
+<body class="text-gray-300 antialiased selection:bg-blue-500 selection:text-white min-h-screen flex flex-col">
+
+    <!-- Top Visual Progress Bar -->
+    <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 z-50 transition-all duration-75" style="width: 0%"></div>
+
+    <!-- Header Navigation -->
+    <header class="border-b border-gray-800/80 bg-gray-900/70 backdrop-blur sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <span class="mono text-blue-400 font-bold text-base">&lt;saikrishna.k /&gt;</span>
+            <nav class="flex gap-6 text-sm mono">
+                <a href="#about" class="hover:text-blue-400 transition">.about()</a>
+                <a href="#skills" class="hover:text-blue-400 transition">.skills()</a>
+                <a href="#impact" class="hover:text-blue-400 transition">.metrics()</a>
+                <a href="#experience" class="hover:text-blue-400 transition">.experience()</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-6xl mx-auto px-6 py-12 space-y-24 flex-grow">
+        
+        <!-- Hero Introduction Section -->
+        <section id="about" class="grid md:grid-cols-3 gap-8 items-center pt-8">
+            <div class="md:col-span-2 space-y-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-950/40 border border-blue-800/60 rounded-full text-xs font-semibold text-blue-400 tracking-wide uppercase">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Culture Champion & Hackathon Winner 2026
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-tight">
+                    Venkata Saikrishna Kodapaka
+                </h1>
+                <p class="text-xl text-blue-400 mono font-semibold">Lead Java Developer (Backend)</p>
+                <p class="text-gray-400 max-w-xl leading-relaxed text-base">
+                    Architecting distributed systems and high-throughput microservices for over 12 years. Expert in scaling backends, designing enterprise integration pipelines, and optimizing cloud architectures.
+                </p>
+                <div class="flex flex-wrap gap-4 pt-2">
+                    <a href="mailto:kvsaikrishna.iiitn@gmail.com" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium shadow-lg shadow-blue-900/30 transition flex items-center gap-2">
+                        <i class="fa-solid fa-envelope text-sm"></i> Let's Connect
+                    </a>
+                    <a href="https://github.com/kvsaikrishnaiiitn" target="_blank" class="px-5 py-2.5 bg-gray-800 hover:bg-gray-700 text-white border border-gray-700 rounded-lg font-medium transition flex items-center gap-2">
+                        <i class="fa-brands fa-github text-base"></i> Profile Dashboard
+                    </a>
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <div class="relative p-2 border border-gray-800 bg-gray-900/40 rounded-2xl">
+                    <div class="w-64 h-64 bg-gradient-to-br from-gray-800 to-gray-950 rounded-xl flex items-center justify-center border border-gray-800 shadow-inner">
+                        <i class="fa-solid fa-terminal text-6xl text-gray-700/60"></i>
+                    </div>
+                    <div class="absolute -bottom-4 -right-4 bg-gray-900 border border-gray-800 px-4 py-2 rounded-xl text-center shadow-2xl">
+                        <span class="block text-2xl font-bold text-white">12+</span>
+                        <span class="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Years Exp</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Business Metric Highlights -->
+        <section id="impact" class="border-y border-gray-800/80 py-10 bg-gradient-to-r from-gray-900/10 via-blue-950/5 to-gray-900/10">
+            <h3 class="text-xs uppercase tracking-widest text-gray-500 font-bold mb-8 text-center">Engineering Architecture & Scale Performance Metrics</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="p-4 border border-gray-800/40 bg-gray-900/20 rounded-xl">
+                    <div class="text-3xl md:text-4xl font-extrabold text-emerald-400 mb-1">30%</div>
+                    <div class="text-xs text-gray-400">Yearbook Sales Increase</div>
+                </div>
+                <div class="p-4 border border-gray-800/40 bg-gray-900/20 rounded-xl">
+                    <div class="text-3xl md:text-4xl font-extrabold text-blue-400 mb-1">25%</div>
+                    <div class="text-xs text-gray-400">POS Transaction Increase</div>
+                </div>
+                <div class="p-4 border border-gray-800/40 bg-gray-900/20 rounded-xl">
+                    <div class="text-3xl md:text-4xl font-extrabold text-purple-400 mb-1">15%</div>
+                    <div class="text-xs text-gray-400">E-commerce Revenue Boost</div>
+                </div>
+                <div class="p-4 border border-gray-800/40 bg-gray-900/20 rounded-xl">
+                    <div class="text-3xl md:text-4xl font-extrabold text-amber-400 mb-1">100%</div>
+                    <div class="text-xs text-gray-400">Automated Jenkins CI Coverage</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Skill Pillars with Filter Functionality -->
+        <section id="skills" class="space-y-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div class="space-y-2">
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                        <span class="text-blue-500">#</span> Core Technology Capabilities
+                    </h2>
+                    <p class="text-sm text-gray-500">Categorized stack specialization across distributed software models.</p>
+                </div>
+                
+                <!-- Category Filters -->
+                <div class="flex flex-wrap gap-2 text-xs mono">
+                    <button onclick="filterSkills('all', event)" class="filter-btn active-btn px-3 py-1.5 bg-blue-600 text-white border border-blue-600 rounded-md cursor-pointer transition">All Stack</button>
+                    <button onclick="filterSkills('backend', event)" class="filter-btn px-3 py-1.5 bg-gray-800/60 hover:bg-gray-700/60 text-gray-400 border border-gray-700/50 rounded-md cursor-pointer transition">Backend</button>
+                    <button onclick="filterSkills('data', event)" class="filter-btn px-3 py-1.5 bg-gray-800/60 hover:bg-gray-700/60 text-gray-400 border border-gray-700/50 rounded-md cursor-pointer transition">Data/Messaging</button>
+                    <button onclick="filterSkills('devops', event)" class="filter-btn px-3 py-1.5 bg-gray-800/60 hover:bg-gray-700/60 text-gray-400 border border-gray-700/50 rounded-md cursor-pointer transition">DevOps/Cloud</button>
+                </div>
+            </div>
+            
+            <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4" id="skills-grid">
+                <!-- Backend Cards -->
+                <div class="p-5 bg-gray-900/40 border border-gray-800/80 rounded-xl tech-card" data-category="backend">
+                    <div class="w-10 h-10 rounded-lg bg-blue-950 flex items-center justify-center text-blue-400 mb-4"><i class="fa-solid fa-code text-lg"></i></div>
+                    <h3 class="text-white font-bold mb-2">Languages & Core</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">Java, Microservices, J2EE, Distributed Systems, Multithreading, Data Structures.</p>
+                </div>
+                <div class="p-5 bg-gray-900/40 border border-gray-800/80 rounded-xl tech-card" data-category="backend">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-950 flex items-center justify-center text-emerald-400 mb-4"><i class="fa-solid fa-layer-group text-lg"></i></div>
+                    <h3 class="text-white font-bold mb-2">Frameworks & APIs</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">Spring Boot, Spring Data JPA, Hibernate, RESTful Webservices, Akka, Ignite.</p>
+                </div>
+                <!-- Data Cards -->
+                <div class="p-5 bg-gray-900/40 border border-gray-800/80 rounded-xl tech-card" data-category="data">
+                    <div class="w-10 h-10 rounded-lg bg-purple-950 flex items-center justify-center text-purple-400 mb-4"><i class="fa-solid fa-database text-lg"></i></div>
+                    <h3 class="text-white font-bold mb-2">Data Infrastructure</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">Kafka, Oracle, PostgreSQL, MySQL, NoSQL, HBase.</p>
+                </div>
+                <!-- DevOps Cards -->
+                <div class="p-5 bg-gray-900/40 border border-gray-800/80 rounded-xl tech-card" data-category="devops">
+                    <div class="w-10 h-10 rounded-lg bg-amber-950 flex items-center justify-center text-amber-400 mb-4"><i class="fa-solid fa-cloud text-lg"></i></div>
+                    <h3 class="text-white font-bold mb-2">DevOps & Cloud</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">Docker, Kubernetes, AWS EKS, Azure (AZ-900), Harness, Git.</p>
+                </div>
+                <div class="p-5 bg-gray-900/40 border border-gray-800/80 rounded-xl tech-card" data-category="devops">
+                    <div class="w-10 h-10 rounded-lg bg-rose-950 flex items-center justify-center text-rose-400 mb-4"><i class="fa-solid fa-chart-line text-lg"></i></div>
+                    <h3 class="text-white font-bold mb-2">CI/CD & Monitoring</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">Jenkins, ELK Stack (Elasticsearch, Logstash, Kibana), Splunk, SonarQube, Maven.</p>
+                </div>
+                <div class="p-5 bg-gray-900/40 border border-gray-800/80 rounded-xl tech-card" data-category="backend">
+                    <div class="w-10 h-10 rounded-lg bg-teal-950 flex items-center justify-center text-teal-400 mb-4"><i class="fa-solid fa-industry text-lg"></i></div>
+                    <h3 class="text-white font-bold mb-2">Target Domains</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">Investment Banking, High-Scale Product Development, Global E-commerce.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chronological Engineering Timeline -->
+        <section id="experience" class="space-y-8">
+            <div class="space-y-2">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                    <span class="text-blue-500">#</span> Professional Engineering Journey
+                </h2>
+                <p class="text-sm text-gray-500">A timeline of architecture ownership and technical delivery.</p>
+            </div>
+
+            <div class="space-y-6 border-l-2 border-gray-800 ml-4 pl-6 relative">
+                <!-- Timeline item 1 -->
+                <div class="relative">
+                    <div class="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-blue-500 border-4 border-gray-900"></div>
+                    <div class="flex flex-wrap justify-between items-start gap-2 mb-1">
+                        <h3 class="text-lg font-bold text-white">Senior Software Engineer</h3>
+                        <span class="px-2.5 py-0.5 bg-gray-900 text-xs border border-gray-800 rounded-full mono text-gray-400">Jul 2025 - Present</span>
+                    </div>
+                    <p class="text-sm text-blue-400 font-semibold mb-2">Lloyds Technology Centre</p>
+                    <p class="text-sm text-gray-400 max-w-3xl leading-relaxed">
+                        <strong>Project: Rates Data Aggregator (RDA).</strong> Driving foundational application design and robust framework configurations. Managing high-throughput pipelines, executing complex peer reviews, and anchoring PROD/UAT releases.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-3 text-[11px] mono">
+                        <span class="px-2 py-0.5 bg-gray-900 rounded border border-gray-800">Java</span>
+                        <span class="px-2 py-0.5 bg-gray-900 rounded border border-gray-800">SpringBoot</span>
+                        <span class="px-2 py-0.5 bg-gray-900 rounded border border-gray-800">Kafka</span>
+                        <span class="px-2 py-0.5 bg-gray-900 rounded border border-gray-800">Docker</span>
+                    </div>
+                </div>
+
+                <!-- Timeline item 2 -->
+                <div class="relative pt-6">
+                    <div class="absolute -left-[31px] top-[30px] w-4 h-4 rounded-full bg-gray-700 border-4 border-gray-900"></div>
+                    <div class="flex flex-wrap justify-between items-start gap-2 mb-1">
+                        <h3 class="text-lg font-bold text-white">Senior Software Engineer</h3>
+                        <span class="px-2.5 py-0.5 bg-gray-900 text-xs border border-gray-800 rounded-full mono text-gray-400">Dec 2022 - Jun 2025</span>
+                    </div>
+                    <p class="text-sm text-blue-400 font-semibold mb-2">Wells Fargo</p>
+                    <p class="text-sm text-gray-400 max-w-3xl leading-relaxed">
+                        <strong>Project: Vasara – Enhanced Market Risk (EMR).</strong> Engineered advanced validation frameworks to streamline massive data integrations. Developed automated validation tooling to accelerate timeline cycles for production Go-Live matrices.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-3 text-[11px] mono">
+                        <span class="px-2 py-0.5 bg-gray-900 rounded border border-gray-800">Java</span>
+                        <span class="px-2 py-0.5 bg-gray-900 rounded border border-gray-800">Akka</span>
+                        <span class="px-2 py-0.5 bg-gray-900 rounded border border-gray-800">Apache Ignite</span>
+                        <span class="px-2 py-0.5 bg-gray-900 rounded border border-gray-800">HBase</span>
+                        <span class="px-2 py-0.5 bg-gray-900 rounded border border-gray-800">Azure</span>
+                    </div>
+                </div>
+
+                <!-- Timeline item 3 -->
+                <div class="relative pt-6">
+                    <div class="absolute -left-[31px] top-[30px] w-4 h-4 rounded-full bg-gray-700 border-4 border-gray-900"></div>
+                    <div class="flex flex-wrap justify-between items-start gap-2 mb-1">
+                        <h3 class="text-lg font-bold text-white">Program Manager / Lead Developer</h3>
+                        <span class="px-2.5 py-0.5 bg-gray-900 text-xs border border-gray-800 rounded-full mono text-gray-400">Jan 2020 - Nov 2022</span>
+                    </div>
+                    <p class="text-sm text-blue-400 font-semibold mb-2">ValueLabs</p>
+                    <p class="text-sm text-gray-400 max-w-3xl leading-relaxed">
+                        <strong>Project: Jostens (E-commerce).</strong> Oversaw critical architectural features driving a 30% yearbook sales growth spike and an immediate 15% revenue gain. Repeatedly recognized with "Star of the Month" performance honors.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-3 text-[11px] mono">
+                        <span class="px-2 py-0.5 bg-gray-900 rounded border border-gray-800">Microservices</span>
+                        <span class="px-2 py-0.5 bg-gray-900 rounded border border-gray-800">Oracle</span>
+                        <span class="px-2 py-0.5 bg-gray-900 rounded border border-gray-800">Jenkins</span>
+                        <span class="px-2 py-0.5 bg-gray-900 rounded border border-gray-800">GitLab</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hackathon & Community Profile Section -->
+        <section class="space-y-6">
+            <h2 class="text-2xl font-bold text-white flex items-center gap-3">
+                <span class="text-blue-500">#</span> GitHub Dev Insights
+            </h2>
+            <div class="grid md:grid-cols-2 gap-6 bg-gray-900/30 p-6 border border-gray-800 rounded-2xl">
+                <div class="space-y-4">
+                    <h4 class="font-bold text-white text-base">Public Contributions</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Active open-source components covering clean data structures, core algorithms, design pattern templates, and Spring Cloud microservices configurations.
+                    </p>
+                </div>
+                <div class="flex items-center justify-center border border-gray-800/80 bg-gray-950/40 rounded-xl p-6 text-center text-sm text-gray-500 mono">
+                    &lt;github-widgets-active&gt;
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800/80 bg-gray-950 py-8 text-center text-xs text-gray-500 mono mt-auto">
+        <p>&copy; 2026 Venkata Saikrishna Kodapaka. Live deployed via GitHub Pages.</p>
+    </footer>
+
+    <!-- Interactive JavaScript Engine -->
+    <script>
+        // Smooth Visual Scroll Progress Tracking Indicator
+        window.addEventListener('scroll', () => {
+            const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scroll-progress').style.width = scrolled + '%';
+        });
+
+        // Client-side Skill Filtering Architecture
+        function filterSkills(category, event) {
+            const cards = document.querySelectorAll('#skills-grid > div');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            // Handle active button layout transformations
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');
+                btn.classList.add('bg-gray-800/60', 'text-gray-400', 'border-gray-700/50');
+            });
+            
+            const activeBtn = event.currentTarget;
+            activeBtn.classList.remove('bg-gray-800/60', 'text-gray-400', 'border-gray-700/50');
+            activeBtn.classList.add('bg-blue-600', 'text-white', 'border-blue-600');
+            
+            // Apply card transitions
+            cards.forEach(card => {
+                if(category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'block';
+                    setTimeout(() => { card.style.opacity = '1'; }, 50);
+                } else {
+                    card.style.opacity = '0';
+                    setTimeout(() => { card.style.display = 'none'; }, 200);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
