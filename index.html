@@ -115,11 +115,13 @@
         .reveal-d2.in-view{animation-delay:.2s}
         .reveal-d3.in-view{animation-delay:.3s}
 
-        /* Nav */
+        /* Nav — method-call labels with IDE-style dimmed punctuation */
         .nav-link{position:relative;transition:color .25s}
         .nav-link:hover{color:#93c5fd}
         .nav-link.active{color:#60a5fa}
         .nav-link.active::after{content:'';position:absolute;left:0;right:0;bottom:-6px;height:2px;border-radius:2px;background:linear-gradient(90deg,#3b82f6,#22d3ee)}
+        .syn{opacity:.5;transition:opacity .25s}
+        .nav-link:hover .syn,.nav-link.active .syn{opacity:.9}
 
         /* Skill bars */
         .skill-bar{height:6px;border-radius:9999px;background:#1a2332;overflow:hidden}
@@ -175,15 +177,23 @@
     <!-- Header Navigation -->
     <header class="sticky top-0 z-50 border-b border-gray-800/70 bg-[#0a0e14]/75 backdrop-blur-xl">
         <div class="max-w-6xl mx-auto px-5 md:px-6 h-16 flex items-center justify-between">
-            <a href="#home" class="mono text-blue-400 font-bold text-base tracking-tight">&lt;kvsaikrishnaiiitn /&gt;</a>
+            <a href="#home" class="group flex items-center gap-3" title="Venkata Saikrishna Kodapaka" aria-label="Home — Venkata Saikrishna Kodapaka">
+                <span class="mono text-blue-400 font-bold text-base tracking-tight">&lt;vsk /&gt;</span>
+                <span class="hidden lg:inline border-l border-gray-700/80 pl-3 text-[13px] font-sans text-gray-400 group-hover:text-gray-200 transition-colors">Lead Java Developer</span>
+            </a>
             <nav class="hidden lg:flex items-center gap-6 text-sm mono">
-                <a href="#about" class="nav-link hover:text-blue-400 transition">.about()</a>
-                <a href="#impact" class="nav-link hover:text-blue-400 transition">.metrics()</a>
-                <a href="#skills" class="nav-link hover:text-blue-400 transition">.skills()</a>
-                <a href="#experience" class="nav-link hover:text-blue-400 transition">.experience()</a>
-                <a href="#awards" class="nav-link hover:text-blue-400 transition">.awards()</a>
-                <a href="#github" class="nav-link hidden lg:inline hover:text-blue-400 transition">.github()</a>
-                <a href="#contact" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-sans font-medium transition shadow-lg shadow-blue-900/30">Let's Talk</a>
+                <a href="#about" class="nav-link hover:text-blue-400 transition"><span class="syn">.</span>about<span class="syn">()</span></a>
+                <a href="#impact" class="nav-link hover:text-blue-400 transition"><span class="syn">.</span>impact<span class="syn">()</span></a>
+                <a href="#skills" class="nav-link hover:text-blue-400 transition"><span class="syn">.</span>skills<span class="syn">()</span></a>
+                <a href="#experience" class="nav-link hover:text-blue-400 transition"><span class="syn">.</span>experience<span class="syn">()</span></a>
+                <a href="#awards" class="nav-link hover:text-blue-400 transition"><span class="syn">.</span>awards<span class="syn">()</span></a>
+                <a href="#github" class="nav-link hidden lg:inline hover:text-blue-400 transition"><span class="syn">.</span>github<span class="syn">()</span></a>
+                <a href="#contact" class="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-sans font-medium transition shadow-lg shadow-blue-900/30">
+                    <span class="relative flex h-2 w-2" aria-hidden="true">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-300 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+                    </span>Hire Me
+                </a>
             </nav>
             <button id="menu-btn" class="lg:hidden text-gray-300 hover:text-white p-2" aria-label="Toggle menu">
                 <i class="fa-solid fa-bars text-xl"></i>
@@ -192,13 +202,19 @@
         <!-- Mobile menu -->
         <div id="mobile-menu" class="lg:hidden hidden border-t border-gray-800/70 bg-[#0a0e14]/95 backdrop-blur-xl">
             <nav class="px-6 py-4 flex flex-col gap-1 text-sm mono">
-                <a href="#about" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition">.about()</a>
-                <a href="#impact" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition">.metrics()</a>
-                <a href="#skills" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition">.skills()</a>
-                <a href="#experience" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition">.experience()</a>
-                <a href="#awards" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition">.awards()</a>
-                <a href="#github" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition">.github()</a>
-                <a href="#contact" class="mob-link py-2.5 px-3 rounded-lg bg-blue-600 text-white text-center font-sans font-medium">Let's Talk</a>
+                <p class="px-3 pb-2 text-[11px] font-sans text-gray-500">Venkata Saikrishna Kodapaka · Lead Java Developer</p>
+                <a href="#about" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition"><span class="syn">.</span>about<span class="syn">()</span></a>
+                <a href="#impact" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition"><span class="syn">.</span>impact<span class="syn">()</span></a>
+                <a href="#skills" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition"><span class="syn">.</span>skills<span class="syn">()</span></a>
+                <a href="#experience" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition"><span class="syn">.</span>experience<span class="syn">()</span></a>
+                <a href="#awards" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition"><span class="syn">.</span>awards<span class="syn">()</span></a>
+                <a href="#github" class="mob-link py-2.5 px-3 rounded-lg hover:bg-gray-800/60 hover:text-blue-400 transition"><span class="syn">.</span>github<span class="syn">()</span></a>
+                <a href="#contact" class="mob-link mt-1 py-2.5 px-3 rounded-lg bg-blue-600 text-white text-center font-sans font-medium inline-flex items-center justify-center gap-2">
+                    <span class="relative flex h-2 w-2" aria-hidden="true">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-300 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+                    </span>Hire Me
+                </a>
             </nav>
         </div>
     </header>
