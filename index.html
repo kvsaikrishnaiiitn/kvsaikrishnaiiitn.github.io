@@ -198,7 +198,7 @@
     <!-- Header Navigation -->
     <header class="sticky top-0 z-50 border-b border-gray-800/70 bg-[#0a0e14]/75 backdrop-blur-xl">
         <div class="max-w-6xl mx-auto px-5 md:px-6 h-16 flex items-center justify-between">
-            <a href="#home" class="group flex items-center gap-3" title="Venkata Saikrishna Kodapaka" aria-label="Home — Venkata Saikrishna Kodapaka">
+            <a href="#home" class="group flex items-center gap-3" title="Venkata Saikrishna Kodapaka" aria-label="vsk — Venkata Saikrishna Kodapaka, home">
                 <span class="mono text-blue-400 font-bold text-base tracking-tight">&lt;vsk /&gt;</span>
                 <span class="hidden lg:inline border-l border-gray-700/80 pl-3 text-[13px] font-sans text-gray-400 group-hover:text-gray-200 transition-colors">Lead Java Developer</span>
             </a>
@@ -1076,11 +1076,11 @@
     <!-- Footer (extra bottom padding keeps the icons clear of the fixed terminal tab / back-to-top at full scroll) -->
     <footer class="border-t border-gray-800/70 bg-[#070a10]/80 pt-10 pb-24 md:pb-28 mt-8">
         <div class="max-w-6xl mx-auto px-5 md:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-            <p class="mono text-xs text-gray-500">&copy; <span id="year">2026</span> Venkata Saikrishna Kodapaka · Crafted with <i class="fa-solid fa-heart text-red-400 text-[10px]"></i> · Deployed on GitHub Pages</p>
+            <p class="mono text-xs text-gray-400">&copy; <span id="year">2026</span> Venkata Saikrishna Kodapaka · Crafted with <i class="fa-solid fa-heart text-red-400 text-[10px]"></i> · Deployed on GitHub Pages</p>
             <div class="flex items-center gap-5 text-gray-500">
-                <a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="hover:text-blue-400 transition text-lg"><i class="fa-brands fa-github"></i></a>
-                <a href="mailto:kvsaikrishna.iiitn@gmail.com" class="hover:text-blue-400 transition text-lg"><i class="fa-solid fa-envelope"></i></a>
-                <a href="tel:+918985065478" class="hover:text-blue-400 transition text-lg"><i class="fa-solid fa-phone"></i></a>
+                <a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="hover:text-blue-400 transition text-lg" title="GitHub" aria-label="GitHub profile"><i class="fa-brands fa-github"></i></a>
+                <a href="mailto:kvsaikrishna.iiitn@gmail.com" class="hover:text-blue-400 transition text-lg" title="Email" aria-label="Email kvsaikrishna.iiitn@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+                <a href="tel:+918985065478" class="hover:text-blue-400 transition text-lg" title="Phone" aria-label="Phone +91 89850 65478"><i class="fa-solid fa-phone"></i></a>
             </div>
         </div>
     </footer>
@@ -1128,6 +1128,10 @@
 
         /* Isolate each subsystem so a single failure never breaks the others */
         function safe(fn){ try{ fn(); }catch(err){ if(window.console && console.warn) console.warn('[portfolio init]', err); } }
+        /* Users who ask for reduced motion get content without autonomous animation:
+           CSS motion is already disabled globally; JS timers (typing, counters,
+           confetti) are gated on this flag. */
+        var REDUCED_MOTION = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
         /* ---------- Basics ---------- */
         document.getElementById('year').textContent = new Date().getFullYear();
@@ -1195,7 +1199,9 @@
             else { countRafId = null; }
         }
         function startCount(el){
-            activeCounters.add({el: el, target: parseInt(el.getAttribute('data-count'), 10) || 0, start: performance.now()});
+            var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+            if(REDUCED_MOTION){ el.textContent = target; return; }
+            activeCounters.add({el: el, target: target, start: performance.now()});
             if(!countRafId){ countRafId = requestAnimationFrame(countTick); }
         }
         safe(function(){
@@ -1290,7 +1296,7 @@
             }
             setTimeout(typeRole, deleting ? 42 : 90);
         }
-        safe(function(){ setTimeout(typeRole, 1200); });
+        safe(function(){ if(!REDUCED_MOTION){ setTimeout(typeRole, 1200); } });
 
         /* ---------- Terminal typing ---------- */
         var termLines = [
@@ -1333,7 +1339,14 @@
             }
             setTimeout(typeTerminal, 22 + Math.random() * 42);
         }
-        safe(typeTerminal);
+        /* Reduced motion: paint the finished listing instantly (same highlighted
+           markup, no typing loop, no 10s replay). */
+        function renderTerminalStatic(){
+            termBody.innerHTML = termLines.map(function(line){
+                return '<div class="term-line">' + (line.h || '&nbsp;') + '</div>';
+            }).join('');
+        }
+        safe(function(){ if(REDUCED_MOTION){ renderTerminalStatic(); } else { typeTerminal(); } });
 
         /* ---------- IDE card tilt ---------- */
         var ideCard = document.getElementById('ide-card');
@@ -1361,6 +1374,7 @@
             burst(r.left + r.width / 2, r.top + r.height / 2);
         };
         function burst(x, y){
+            if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){ return; }
             var colors = ['#3b82f6','#22d3ee','#a78bfa','#34d399','#fbbf24','#f472b6'];
             for(var i = 0; i < 90; i++){
                 parts.push({
