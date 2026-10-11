@@ -41,6 +41,8 @@
         button,input,textarea,select{font-family:inherit}
         .mono{font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
         ::selection{background:#3b82f6;color:#fff}
+        /* consistent keyboard focus ring everywhere (links, buttons, terminal input) */
+        a:focus-visible,button:focus-visible{outline:2px solid #38bdf8;outline-offset:3px;border-radius:.375rem}
         ::-webkit-scrollbar{width:10px}
         ::-webkit-scrollbar-track{background:#0a0e14}
         ::-webkit-scrollbar-thumb{background:#1e293b;border-radius:8px;border:2px solid #0a0e14}
@@ -166,8 +168,8 @@
     <!-- Scroll progress -->
     <div id="scroll-progress" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-blue-500 via-cyan-400 to-purple-500 z-[80] transition-all duration-75" style="width:0%"></div>
 
-    <!-- Confetti canvas -->
-    <canvas id="confetti"></canvas>
+    <!-- Confetti canvas (decorative) -->
+    <canvas id="confetti" aria-hidden="true"></canvas>
     <noscript><style>.reveal{opacity:1 !important;transform:none !important}</style></noscript>
 
     <!-- Header Navigation -->
@@ -286,7 +288,7 @@
                         <span class="ml-3 mono text-xs text-gray-500">VenkataSaikrishna.java</span>
                         <span class="ml-auto mono text-[10px] text-gray-600 hidden sm:inline">utf-8 · Java 21</span>
                     </div>
-                    <div id="term-body" class="mono text-[11px] sm:text-[13px] px-3.5 sm:px-5 py-4 min-h-[248px] text-gray-300 overflow-x-hidden"></div>
+                    <div id="term-body" class="mono text-[11px] sm:text-[13px] px-3.5 sm:px-5 py-4 h-[256px] sm:h-[296px] text-gray-300 overflow-hidden"></div>
                     <div class="px-3.5 sm:px-5 pt-3 pb-9 border-t border-gray-800/70 bg-gray-900/40 mono text-xs">
                         <span class="text-gray-500">$ </span><span class="text-cyan-300">./deploy --to github-pages</span>
                         <span class="block mt-1.5 text-emerald-400"><i class="fa-solid fa-circle-check mr-1.5"></i>Live at kvsaikrishnaiiitn.github.io</span>
@@ -813,7 +815,15 @@
                         </span>
                     </div>
                     <div class="bg-[#0d1117] border border-gray-800/70 rounded-xl p-3 sm:p-4 transition group-hover:border-blue-500/40 group-hover:shadow-lg group-hover:shadow-blue-900/20">
-                        <img src="https://github-readme-stats.vercel.app/api?username=kvsaikrishnaiiitn&show_icons=true&theme=github_dark&hide_border=true&include_all_commits=true&count_private=false&hide_rank=true" alt="GitHub stats" class="w-full max-w-[640px] mx-auto rounded-lg" loading="lazy">
+                        <!-- stats tile grid — filled in-page from the same live contribution API as the graph (no third-party image) -->
+                        <div id="contrib-stats" class="grid grid-cols-2 sm:grid-cols-3 gap-3 min-h-[132px]">
+                            <div class="rounded-xl border border-gray-800/70 bg-gray-900/40 h-[100px] animate-pulse"></div>
+                            <div class="rounded-xl border border-gray-800/70 bg-gray-900/40 h-[100px] animate-pulse"></div>
+                            <div class="rounded-xl border border-gray-800/70 bg-gray-900/40 h-[100px] animate-pulse"></div>
+                            <div class="rounded-xl border border-gray-800/70 bg-gray-900/40 h-[100px] animate-pulse"></div>
+                            <div class="rounded-xl border border-gray-800/70 bg-gray-900/40 h-[100px] animate-pulse"></div>
+                            <div class="rounded-xl border border-gray-800/70 bg-gray-900/40 h-[100px] animate-pulse"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="card p-5 reveal group">
@@ -1096,13 +1106,32 @@
             if(!countRafId){ countRafId = requestAnimationFrame(countTick); }
         }
         safe(function(){
+        var pendingCounters = [];
         var countObs = new IntersectionObserver(function(entries){
             entries.forEach(function(en){
                 /* fires once the metric is scrolled into/past the upper viewport band */
-                if(en.isIntersecting){ startCount(en.target); countObs.unobserve(en.target); }
+                if(en.isIntersecting){
+                    startCount(en.target);
+                    pendingCounters = pendingCounters.filter(function(el){ return el !== en.target; });
+                    countObs.unobserve(en.target);
+                }
             });
         }, {threshold:0.4, rootMargin:'0px 0px -25% 0px'});
-        document.querySelectorAll('.counter').forEach(function(el){ countObs.observe(el); });
+        document.querySelectorAll('.counter').forEach(function(el){ countObs.observe(el); pendingCounters.push(el); });
+
+        /* Anchor jumps and fast scrollbar drags can skip a metric entirely, so the observer
+           may never fire for it — a cheap sweep (the pending set shrinks to nothing) makes
+           sure a counter has always run by the time it is on screen. */
+        function sweepCounters(){
+            if(!pendingCounters.length) return;
+            var vh = window.innerHeight;
+            pendingCounters = pendingCounters.filter(function(el){
+                if(el.getBoundingClientRect().top < vh * 0.85){ startCount(el); return false; }
+                return true;
+            });
+        }
+        window.addEventListener('scroll', sweepCounters, {passive:true});
+        sweepCounters();
         });
 
         /* ---------- Skill bars ---------- */
@@ -1757,6 +1786,46 @@
             var d = new Date(iso + 'T00:00:00Z');
             return MONTHS[d.getUTCMonth()] + ' ' + d.getUTCDate() + ', ' + d.getUTCFullYear();
         }
+        function relShort(iso){
+            var now = new Date();
+            var todayUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+            var diff = Math.round((todayUTC - new Date(iso + 'T00:00:00Z').getTime()) / 86400000);
+            if(diff <= 0) return 'today';
+            if(diff === 1) return 'yesterday';
+            if(diff < 45) return diff + 'd ago';
+            if(diff < 365) return Math.round(diff / 30) + 'mo ago';
+            return (diff / 365).toFixed(1) + 'y ago';
+        }
+
+        /* metric tiles for the "Contributions & Stats" card, derived from the same payload as the graph */
+        function statTile(icon, iconCls, value, valueCls, label, caption){
+            return '<div class="rounded-xl border border-gray-800/70 bg-gray-900/40 px-3 py-3.5 text-center transition hover:border-blue-500/30">' +
+                '<i class="fa-solid ' + icon + ' ' + iconCls + ' text-sm mb-1.5 block"></i>' +
+                '<div class="text-xl sm:text-2xl font-black leading-none ' + valueCls + '">' + value + '</div>' +
+                '<div class="mt-1.5 text-[11px] font-bold text-gray-300">' + label + '</div>' +
+                '<div class="mt-0.5 text-[10px] mono text-gray-500 truncate">' + caption + '</div>' +
+            '</div>';
+        }
+        function fillStats(days){
+            var statsEl = document.getElementById('contrib-stats');
+            if(!statsEl) return;
+            var total = 0, active = 0, best = null, first = null, last = null;
+            days.forEach(function(d){
+                if(d.count > 0){
+                    total += d.count; active++;
+                    if(!best || d.count > best.count) best = d;
+                    if(!first) first = d;
+                    last = d;
+                }
+            });
+            statsEl.innerHTML =
+                statTile('fa-chart-simple', 'text-sky-400', total, 'text-sky-400', 'Contributions', 'last 12 months') +
+                statTile('fa-calendar-check', 'text-emerald-400', active, 'text-emerald-400', 'Active Days', 'of ' + days.length + ' days') +
+                statTile('fa-trophy', 'text-amber-400', best ? best.count : 0, 'text-amber-400', 'Best Day', best ? niceDate(best.date) : 'no activity yet') +
+                statTile('fa-gauge-high', 'text-cyan-300', active ? (total / active).toFixed(1) : '0.0', 'text-cyan-300', 'Avg / Active Day', 'when commits happen') +
+                statTile('fa-seedling', 'text-violet-400', first ? relShort(first.date) : '—', 'text-violet-400', 'Active Since', first ? niceDate(first.date) : '—') +
+                statTile('fa-clock-rotate-left', 'text-blue-400', last ? relShort(last.date) : '—', 'text-blue-400', 'Last Commit', last ? niceDate(last.date) : '—');
+        }
 
         function render(days){
             if(!Array.isArray(days) || !days.length){ fail(); return; }
@@ -1814,6 +1883,7 @@
             '</div>';
 
             host.innerHTML = '<div class="overflow-x-auto pb-1">' + svg + '</div>' + legend;
+            fillStats(days);
             if(totalEl){
                 totalEl.innerHTML = '<span class="text-emerald-400">' + total + '</span>' +
                     '<span class="text-gray-600 mx-1.5">·</span><span class="text-gray-500">last 12 months</span>';
@@ -1827,6 +1897,15 @@
                     '<p class="text-xs text-gray-400 mb-3">Contribution graph is temporarily unavailable.</p>' +
                     '<a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="text-xs mono text-blue-400 hover:text-cyan-300 transition">view contributions on GitHub <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>' +
                 '</div>';
+            var statsEl = document.getElementById('contrib-stats');
+            if(statsEl){
+                statsEl.innerHTML =
+                    '<div class="col-span-full flex flex-col items-center justify-center gap-2 py-6 text-center">' +
+                        '<i class="fa-solid fa-chart-column text-2xl text-gray-600"></i>' +
+                        '<p class="text-xs text-gray-400">Contribution stats are temporarily unavailable.</p>' +
+                        '<a href="https://github.com/kvsaikrishnaiiitn" target="_blank" rel="noopener" class="text-xs mono text-blue-400 hover:text-cyan-300 transition">view on GitHub <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i></a>' +
+                    '</div>';
+            }
             if(totalEl){ totalEl.innerHTML = '<span class="text-gray-500">last 12 months</span>'; }
         }
 
