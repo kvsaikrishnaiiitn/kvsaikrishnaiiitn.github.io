@@ -27,7 +27,57 @@ Solution-oriented **Lead Java Developer** with more than **12 years** of applica
 
 ## 🛠️ Tech Stack
 
-`Java` · `Spring Boot` · `Spring Data JPA` · `Hibernate` · `REST` · `Kafka` · `Akka` · `Apache Ignite` · `Oracle` · `PostgreSQL` · `MySQL` · `HBase` · `Elasticsearch` · `Splunk` · `Docker` · `Kubernetes` · `AWS EKS` · `Azure (AZ-900)` · `Jenkins` · `Harness` · `SonarQube` · `Maven` · `Git`
+**Languages & Core**
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Java_21%2B-ED8B00?style=flat-square&logo=openjdk&logoColor=white" alt="Java 21+" />
+  <img src="https://img.shields.io/badge/J2EE-2D304A?style=flat-square" alt="J2EE" />
+  <img src="https://img.shields.io/badge/Multithreading-2563EB?style=flat-square" alt="Multithreading" />
+  <img src="https://img.shields.io/badge/Distributed_Systems-2563EB?style=flat-square" alt="Distributed Systems" />
+  <img src="https://img.shields.io/badge/Data_Structures_%26_DSA-2563EB?style=flat-square" alt="Data Structures & DSA" />
+</p>
+
+**Frameworks & APIs**
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat-square&logo=springboot&logoColor=white" alt="Spring Boot" />
+  <img src="https://img.shields.io/badge/Spring_Data_JPA-6DB33F?style=flat-square&logo=spring&logoColor=white" alt="Spring Data JPA" />
+  <img src="https://img.shields.io/badge/Hibernate-59626F?style=flat-square&logo=hibernate&logoColor=white" alt="Hibernate" />
+  <img src="https://img.shields.io/badge/RESTful_APIs-2563EB?style=flat-square" alt="RESTful APIs" />
+  <img src="https://img.shields.io/badge/Akka-ED1C24?style=flat-square" alt="Akka" />
+  <img src="https://img.shields.io/badge/Apache_Ignite-7048B6?style=flat-square&logo=apacheignite&logoColor=white" alt="Apache Ignite" />
+</p>
+
+**Data & Messaging**
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Apache_Kafka-231F20?style=flat-square&logo=apachekafka&logoColor=white" alt="Apache Kafka" />
+  <img src="https://img.shields.io/badge/Oracle-C74634?style=flat-square" alt="Oracle" />
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white" alt="MySQL" />
+  <img src="https://img.shields.io/badge/Apache_HBase-D72626?style=flat-square&logo=apachehbase&logoColor=white" alt="Apache HBase" />
+  <img src="https://img.shields.io/badge/Elasticsearch-005571?style=flat-square&logo=elasticsearch&logoColor=white" alt="Elasticsearch" />
+</p>
+
+**DevOps & Cloud**
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker" />
+  <img src="https://img.shields.io/badge/Kubernetes-326CE5?style=flat-square&logo=kubernetes&logoColor=white" alt="Kubernetes" />
+  <img src="https://img.shields.io/badge/AWS_EKS-FF9900?style=flat-square" alt="AWS EKS" />
+  <img src="https://img.shields.io/badge/Azure_AZ--900-0078D4?style=flat-square&logo=microsoftazure&logoColor=white" alt="Azure AZ-900" />
+  <img src="https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white" alt="Git" />
+</p>
+
+**CI/CD & Observability**
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Jenkins-D24939?style=flat-square&logo=jenkins&logoColor=white" alt="Jenkins" />
+  <img src="https://img.shields.io/badge/SonarQube-4E9BCD?style=flat-square&logo=sonarqube&logoColor=white" alt="SonarQube" />
+  <img src="https://img.shields.io/badge/Maven-C71A36?style=flat-square&logo=apachemaven&logoColor=white" alt="Maven" />
+  <img src="https://img.shields.io/badge/Splunk-65A637?style=flat-square&logo=splunk&logoColor=white" alt="Splunk" />
+  <img src="https://img.shields.io/badge/Harness-4F6EF7?style=flat-square" alt="Harness" />
+</p>
 
 ## 💼 Experience
 
