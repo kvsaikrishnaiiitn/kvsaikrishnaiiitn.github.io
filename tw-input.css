@@ -1,0 +1,15 @@
+/*
+ * Tailwind CSS build input — the site ships a pre-built static stylesheet
+ * instead of the Play CDN (which compiles ~380KB of JS at runtime and was
+ * the single biggest performance hit on this page).
+ *
+ * Rebuild after adding/changing Tailwind classes in index.html:
+ *   npx tailwindcss@3.4.17 -i ./tw-input.css -o ./assets/tailwind.min.css --content ./index.html --minify
+ *
+ * Icon + font assets are self-hosted too (see assets/fa.min.css + assets/fonts/):
+ *   - Font Awesome subset = only the glyphs used in index.html (MIT, free to subset)
+ *   - Space Grotesk / JetBrains Mono = latin variable woff2 (OFL, self-hostable)
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
