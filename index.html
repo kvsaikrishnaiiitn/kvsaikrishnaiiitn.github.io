@@ -321,6 +321,32 @@
         html[data-theme=light] .theme-ic-sun{opacity:1;transform:rotate(0) scale(1)}
         html[data-theme=light] #theme-toggle{background:#fff;border-color:#e5e7eb;color:#0369a1;box-shadow:0 1px 2px rgba(15,23,42,.08)}
         html[data-theme=light] #theme-toggle:hover{border-color:#fcd34d;color:#b45309}
+        /* icon swap choreography: transitions are frozen while the view
+           transition captures its snapshots, so the button cross-fades
+           moon<->sun in sync with the circular reveal; once the reveal
+           finishes the live icon springs in with a slight overshoot and a
+           soft accent ring pulses on the button (all skipped when the user
+           prefers reduced motion) */
+        html.vt-freeze *,html.vt-freeze *::before,html.vt-freeze *::after{transition:none!important}
+        @keyframes theme-ic-pop-sun{
+            0%{transform:scale(.25) rotate(90deg);opacity:.35}
+            55%{transform:scale(1.2) rotate(-8deg);opacity:1}
+            78%{transform:scale(.95) rotate(4deg)}
+            100%{transform:scale(1) rotate(0)}
+        }
+        @keyframes theme-ic-pop-moon{
+            0%{transform:scale(.25) rotate(-90deg);opacity:.35}
+            55%{transform:scale(1.2) rotate(8deg);opacity:1}
+            78%{transform:scale(.95) rotate(-4deg)}
+            100%{transform:scale(1) rotate(0)}
+        }
+        .theme-ic-sun.theme-swap-sun{animation:theme-ic-pop-sun .55s cubic-bezier(.22,1,.36,1) both}
+        .theme-ic-moon.theme-swap-moon{animation:theme-ic-pop-moon .55s cubic-bezier(.22,1,.36,1) both}
+        @keyframes theme-toggle-ring{
+            0%{box-shadow:0 0 0 0 currentColor}
+            100%{box-shadow:0 0 0 12px rgba(0,0,0,0)}
+        }
+        #theme-toggle.toggle-ring{animation:theme-toggle-ring .65s ease-out}
         /* View Transition: the new theme is revealed as a circle growing from
            the toggle button (--vt-* set in JS); the old shot fades under it */
         ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
@@ -1350,6 +1376,20 @@
                 if(window.__netRepaint){ window.__netRepaint(); }
             }
             syncButton();
+            /* spring-in pop for the incoming icon + a soft accent ring pulse */
+            function celebrate(t){
+                var ic = btn.querySelector(t === 'light' ? '.theme-ic-sun' : '.theme-ic-moon');
+                var swapCls = t === 'light' ? 'theme-swap-sun' : 'theme-swap-moon';
+                btn.classList.remove('toggle-ring');
+                if(ic){ ic.classList.remove('theme-swap-sun', 'theme-swap-moon'); }
+                void btn.offsetWidth; /* restart the animations */
+                btn.classList.add('toggle-ring');
+                if(ic){ ic.classList.add(swapCls); }
+                setTimeout(function(){
+                    btn.classList.remove('toggle-ring');
+                    if(ic){ ic.classList.remove(swapCls); }
+                }, 700);
+            }
             btn.addEventListener('click', function(){
                 var next = current() === 'light' ? 'dark' : 'light';
                 if(document.startViewTransition && !reduceMq.matches){
@@ -1361,11 +1401,25 @@
                     root.style.setProperty('--vt-x', x + 'px');
                     root.style.setProperty('--vt-y', y + 'px');
                     root.style.setProperty('--vt-r', max + 'px');
-                    var vt = document.startViewTransition(function(){ apply(next); });
+                    var vt = document.startViewTransition(function(){
+                        /* freeze CSS transitions while the snapshots are taken so
+                           the captured button already shows the incoming icon —
+                           the snapshot cross-fade then reads as a clean swap */
+                        root.classList.add('vt-freeze');
+                        apply(next);
+                    });
                     if(vt.ready && vt.ready.catch){ vt.ready.catch(function(){}); }
-                    if(vt.finished && vt.finished.catch){ vt.finished.catch(function(){}); }
+                    if(vt.finished && vt.finished.then){
+                        vt.finished.then(function(){
+                            root.classList.remove('vt-freeze');
+                            celebrate(next);
+                        }, function(){
+                            root.classList.remove('vt-freeze');
+                        });
+                    }
                 } else {
                     apply(next);
+                    if(!reduceMq.matches){ celebrate(next); }
                 }
             });
             /* follow live OS theme changes until the user picks a side explicitly */
