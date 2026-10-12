@@ -315,7 +315,7 @@
 
         /* ---- theme toggle button + icon morph ---- */
         #theme-toggle{view-transition-name:theme-toggle}
-        .theme-ic{transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .3s ease}
+        .theme-ic{transition:transform .5s cubic-bezier(.22,1,.36,1),opacity .3s ease;transform-box:fill-box;transform-origin:center}
         .theme-ic-sun{opacity:0;transform:rotate(90deg) scale(.35)}
         html[data-theme=light] .theme-ic-moon{opacity:0;transform:rotate(-90deg) scale(.35)}
         html[data-theme=light] .theme-ic-sun{opacity:1;transform:rotate(0) scale(1)}
@@ -398,8 +398,8 @@
             </nav>
             <div class="flex items-center gap-2">
                 <button id="theme-toggle" type="button" aria-label="Switch to light theme" title="Switch to light theme" class="relative inline-flex items-center justify-center w-9 h-9 rounded-lg border border-gray-700/50 bg-gray-800/40 text-amber-300 hover:text-amber-200 hover:border-amber-400/40 transition-colors duration-300 cursor-pointer">
-                    <i class="fa-solid fa-moon theme-ic theme-ic-moon absolute text-[15px]" aria-hidden="true"></i>
-                    <i class="fa-solid fa-sun theme-ic theme-ic-sun absolute text-[15px]" aria-hidden="true"></i>
+                    <svg class="theme-ic theme-ic-moon absolute" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    <svg class="theme-ic theme-ic-sun absolute" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
                 </button>
                 <button id="menu-btn" class="lg:hidden text-gray-300 hover:text-white p-2" aria-label="Toggle menu">
                     <i class="fa-solid fa-bars text-xl"></i>
